@@ -38,6 +38,11 @@ if [ -z "${GITHUB_TOKEN:-}" ] || [ -z "${GITHUB_REPOSITORY:-}" ]; then
   exit 1
 fi
 
+# A fresh repository does not get the checkout credential helper.
+# The runner still asks for a username, and the Actions token in an
+# Authorization header never gets used. Put the token in the URL instead.
 git -C "$WORKDIR" \
-  -c http.extraheader="AUTHORIZATION: bearer ${GITHUB_TOKEN}" \
-  push --force "https://github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/heads/$BRANCH"
+  -c credential.helper= \
+  push --force \
+  "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" \
+  "HEAD:refs/heads/$BRANCH"

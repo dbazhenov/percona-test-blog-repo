@@ -14,6 +14,9 @@ concurrency:
 
 jobs:
   check:
+    # A direct push to main, such as a workflow edit, does not publish.
+    # GitHub's merge button records "Merge pull request #…".
+    if: github.event_name == 'pull_request' || startsWith(github.event.head_commit.message, 'Merge pull request #')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,7 +28,7 @@ jobs:
         run: make -C tools check
 
   publish:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && startsWith(github.event.head_commit.message, 'Merge pull request #')
     needs: check
     runs-on: ubuntu-latest
     permissions:

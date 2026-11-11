@@ -76,15 +76,15 @@ jobs:
               '',
             ]
             if (posts.length === 1) {
-              lines.push(`You can read the post here: [${posts[0].title}](${posts[0].url})`)
+              lines.push(`This is a preview, not the published post: [${posts[0].title}](${posts[0].url})`)
             } else if (posts.length > 1) {
-              lines.push('You can read the posts here:')
+              lines.push('These are previews, not the published posts:')
               lines.push('')
               for (const post of posts) {
                 lines.push(`- [${post.title}](${post.url})`)
               }
             } else {
-              lines.push(`You can read the preview here: ${origin}/`)
+              lines.push(`This is a preview of the site, not the published blog: ${origin}/`)
             }
             lines.push('')
             lines.push('To change the post, push another commit to this same branch. The preview updates from that commit.')

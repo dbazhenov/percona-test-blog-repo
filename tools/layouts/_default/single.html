@@ -46,6 +46,7 @@
     {{ .Content }}
   </div>
   {{ if eq .Section "blog" }}
+  {{ partial "author-byline.html" . }}
   <section class="related">
     <h2>Related posts</h2>
     <div class="card-grid">

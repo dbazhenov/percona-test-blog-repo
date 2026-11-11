@@ -1,0 +1,31 @@
+{{- $ids := .Params.authors | default slice -}}
+{{- if not $ids -}}
+  {{- return -}}
+{{- end -}}
+<section class="byline">
+  <h2>{{ if gt (len $ids) 1 }}About the authors{{ else }}About the author{{ end }}</h2>
+  {{- range $ids -}}
+    {{- $who := site.GetPage (printf "/authors/%s" .) -}}
+    {{- with $who -}}
+      {{- $avatar := partial "author-avatar.html" (dict "page" .) -}}
+      <div class="byline-card{{ if not $avatar }} no-avatar{{ end }}">
+        {{- with $avatar }}<img class="avatar" src="{{ . }}" alt="">{{ end -}}
+        <div>
+          <p class="byline-name"><a href="{{ .RelPermalink }}">{{ .Params.name | default .Title }}</a></p>
+          {{- if or .Params.role .Params.company -}}
+          <p class="byline-role">
+            {{- with .Params.role }}{{ . }}{{ end -}}
+            {{- if and .Params.role .Params.company }}, {{ end -}}
+            {{- with .Params.company }}{{ . }}{{ end -}}
+          </p>
+          {{- end -}}
+          {{- with .Content }}<div class="byline-bio">{{ . }}</div>{{ end -}}
+          <p class="author-links">
+            {{- with .Params.linkedin }}<a href="{{ . }}">LinkedIn</a>{{ end -}}
+            {{- with .Params.github }}<a href="{{ . }}">GitHub</a>{{ end -}}
+          </p>
+        </div>
+      </div>
+    {{- end -}}
+  {{- end -}}
+</section>

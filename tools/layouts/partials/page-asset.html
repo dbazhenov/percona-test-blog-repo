@@ -1,0 +1,25 @@
+{{- $page := .page -}}
+{{- $path := .path | strings.TrimSpace | strings.TrimPrefix "./" -}}
+{{- if not $path -}}
+  {{- return "" -}}
+{{- end -}}
+{{- if or (hasPrefix $path "http://") (hasPrefix $path "https://") (hasPrefix $path "//") -}}
+  {{- return partial "asset-url.html" $path -}}
+{{- end -}}
+{{- $res := $page.Resources.GetMatch $path -}}
+{{- if not $res -}}
+  {{- return partial "asset-url.html" $path -}}
+{{- end -}}
+{{- $published := $res.RelPermalink -}}
+{{- $basePath := "/" -}}
+{{- with urls.Parse site.BaseURL -}}
+  {{- $basePath = .Path | default "/" -}}
+{{- end -}}
+{{- $basePath = $basePath | strings.TrimSuffix "/" -}}
+{{- if and $basePath (ne $basePath "/") (hasPrefix $published $basePath) -}}
+  {{- $published = strings.TrimPrefix $basePath $published -}}
+{{- end -}}
+{{- if and $published (not (hasPrefix $published "/")) -}}
+  {{- $published = printf "/%s" $published -}}
+{{- end -}}
+{{- return partial "asset-url.html" $published -}}

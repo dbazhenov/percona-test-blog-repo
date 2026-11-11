@@ -1,0 +1,83 @@
+{{- $posts := sort . "Date" "desc" -}}
+{{- $published := where $posts "Draft" false -}}
+{{- $lead := "" -}}
+{{- with index $published 0 -}}{{ $lead = .RelPermalink }}{{ end -}}
+<section class="feed">
+  {{- if $lead -}}
+  <div class="feature">
+    {{- with index $published 0 -}}{{ partial "post-card.html" . }}{{ end -}}
+  </div>
+  {{- end -}}
+  <div class="filters">
+    <label class="filter-field">
+      <span>By Author</span>
+    <select id="filter-author" aria-label="Author">
+      <option value="">All</option>
+      {{- $authorSlugs := slice -}}
+      {{- range $posts -}}
+        {{- range .Params.authors -}}
+          {{- $authorSlugs = $authorSlugs | append . -}}
+        {{- end -}}
+      {{- end -}}
+      {{- range $authorSlugs | uniq | sort -}}
+        {{- $label := . -}}
+        {{- with site.GetPage (printf "/authors/%s" .) -}}
+          {{- $label = .Params.name | default .Title -}}
+        {{- end -}}
+        <option value="{{ . }}">{{ $label }}</option>
+      {{- end -}}
+    </select>
+    </label>
+    <label class="filter-field">
+      <span>By Category</span>
+    <select id="filter-category" aria-label="Category">
+      <option value="">All</option>
+      {{- $categories := slice -}}
+      {{- range $posts -}}
+        {{- range .Params.categories -}}
+          {{- $categories = $categories | append . -}}
+        {{- end -}}
+      {{- end -}}
+      {{- range $categories | uniq | sort -}}
+        <option value="{{ . | urlize }}">{{ . }}</option>
+      {{- end -}}
+    </select>
+    </label>
+    <label class="filter-search">
+      <input id="filter-search" type="search" placeholder="Search" aria-label="Search posts">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M16 16.5 20 20.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </label>
+  </div>
+  <div class="card-grid">
+    {{- range $posts -}}
+      {{- if ne .RelPermalink $lead -}}
+        {{- partial "post-card.html" . -}}
+      {{- end -}}
+    {{- end -}}
+  </div>
+</section>
+<script>
+(function () {
+  var author = document.getElementById("filter-author");
+  var category = document.getElementById("filter-category");
+  var search = document.getElementById("filter-search");
+  var cards = Array.prototype.slice.call(document.querySelectorAll(".card-grid .card"));
+  function apply() {
+    var who = author.value;
+    var topic = category.value;
+    var query = search.value.trim().toLowerCase();
+    cards.forEach(function (card) {
+      var authors = (card.getAttribute("data-authors") || "").split(" ");
+      var cats = (card.getAttribute("data-categories") || "").split(" ");
+      var text = card.getAttribute("data-title") || "";
+      var visible = (!who || authors.indexOf(who) !== -1)
+        && (!topic || cats.indexOf(topic) !== -1)
+        && (!query || text.indexOf(query) !== -1);
+      card.hidden = !visible;
+    });
+  }
+  author.addEventListener("change", apply);
+  category.addEventListener("change", apply);
+  search.addEventListener("input", apply);
+})();
+</script>

@@ -1,0 +1,10 @@
+# Category names exactly as they exist on percona.com/blog.
+# The sync plugin does not create categories. A post category missing in
+# WordPress is skipped and reported; the post is still imported.
+# Replace this starter list with the live WordPress category names.
+# Lines starting with # are comments.
+MySQL
+MariaDB
+PostgreSQL
+MongoDB
+Valkey

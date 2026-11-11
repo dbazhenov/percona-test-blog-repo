@@ -1,0 +1,33 @@
+{{- $slug := .Params.id | default (partial "post-id.html" .) -}}
+<section class="page-intro author-intro">
+  <div class="author-head">
+    {{- with partial "author-avatar.html" (dict "page" .) -}}
+    <img class="avatar" src="{{ . }}" alt="">
+    {{- end -}}
+    <div>
+      <h1>{{ .Params.name | default .Title }}</h1>
+      {{- if or .Params.role .Params.company -}}
+      <p class="role">
+        {{- with .Params.role }}{{ . }}{{ end -}}
+        {{- if and .Params.role .Params.company }}, {{ end -}}
+        {{- with .Params.company }}{{ . }}{{ end -}}
+      </p>
+      {{- end -}}
+      {{ with .Params.type }}<p class="author-type">{{ . }}</p>{{ end }}
+      <p class="author-links">
+        {{ with .Params.linkedin }}<a href="{{ . }}">LinkedIn</a>{{ end }}
+        {{ with .Params.github }}<a href="{{ . }}">GitHub</a>{{ end }}
+      </p>
+    </div>
+  </div>
+  {{ with .Content }}<div class="intro-copy">{{ . }}</div>{{ end }}
+</section>
+<section class="feed">
+  <div class="card-grid">
+    {{- range where site.RegularPages "Section" "blog" -}}
+      {{- if in (.Params.authors | default slice) $slug -}}
+        {{- partial "post-card.html" . -}}
+      {{- end -}}
+    {{- end -}}
+  </div>
+</section>

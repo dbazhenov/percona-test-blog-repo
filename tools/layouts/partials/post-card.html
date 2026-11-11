@@ -1,0 +1,26 @@
+{{- $image := partial "featured-image.html" . -}}
+{{- $excerpt := .Params.description | default (.Summary | plainify) | plainify -}}
+{{- $authorSlugs := delimit (.Params.authors | default slice) " " -}}
+{{- $categorySlugs := slice -}}
+{{- range .Params.categories -}}
+  {{- $categorySlugs = $categorySlugs | append (. | urlize) -}}
+{{- end -}}
+<article class="card" data-title="{{ printf "%s %s" .Title $excerpt | lower }}" data-authors="{{ $authorSlugs }}" data-categories="{{ delimit $categorySlugs " " }}">
+  {{- with $image -}}
+  <a class="card-media" href="{{ $.RelPermalink }}">
+    <img src="{{ . }}" alt="">
+  </a>
+  {{- end -}}
+  <div class="card-copy">
+    <p class="kicker">
+      {{- with .Params.categories -}}<a href="{{ printf "categories/%s/" (index . 0 | urlize) | relURL }}">{{ index . 0 }}</a> | {{ end -}}
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+      {{- with .Params.authors }} | {{ end -}}
+      {{- partial "author-names.html" . -}}
+      {{- if .Draft }} · <span class="draft">Draft</span>{{ end -}}
+    </p>
+    <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+    {{- with $excerpt -}}<p>{{ . | truncate 180 }}</p>{{- end -}}
+    <a class="more" href="{{ .RelPermalink }}">Read More</a>
+  </div>
+</article>

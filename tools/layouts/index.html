@@ -1,0 +1,10 @@
+{{ define "main" }}
+<section class="blog-hero">
+  <div class="blog-hero-copy">
+    <h1>The Percona Database Performance Blog</h1>
+    <p>Technical guides, deep dives, and perspectives across MySQL, PostgreSQL, MongoDB, Valkey, and more.</p>
+  </div>
+  <span class="accent" aria-hidden="true"></span>
+</section>
+{{ partial "post-feed.html" (where site.RegularPages "Section" "blog") }}
+{{ end }}

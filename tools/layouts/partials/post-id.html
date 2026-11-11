@@ -1,0 +1,8 @@
+{{- with .Params.id -}}
+  {{- return . -}}
+{{- end -}}
+{{- $name := .File.ContentBaseName -}}
+{{- if eq $name "index" -}}
+  {{- $name = path.Base (path.Dir .File.Path) -}}
+{{- end -}}
+{{- return $name -}}

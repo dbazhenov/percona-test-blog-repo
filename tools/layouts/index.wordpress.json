@@ -1,0 +1,81 @@
+{{- $posts := slice -}}
+{{- $pages := where site.RegularPages "Section" "blog" -}}
+{{- $pages = sort $pages "Date" "desc" -}}
+{{- range $pages -}}
+  {{- $post := . -}}
+  {{- if not $post.Params.id -}}
+    {{- errorf "Missing id in %s. Set id to the original filename and do not change it when the file is renamed." $post.File.Path -}}
+  {{- end -}}
+  {{- $id := partial "post-id.html" $post -}}
+  {{- if not $post.Title -}}
+    {{- errorf "Missing title in %s" $post.File.Path -}}
+  {{- end -}}
+  {{- $authorSlugs := $post.Params.authors | default slice -}}
+  {{- if not (reflect.IsSlice $authorSlugs) -}}
+    {{- $authorSlugs = slice $authorSlugs -}}
+  {{- end -}}
+  {{- if not $authorSlugs -}}
+    {{- errorf "Missing authors in %s" $post.File.Path -}}
+  {{- end -}}
+  {{- $authors := slice -}}
+  {{- range $authorSlugs -}}
+    {{- $resolved := partial "author-ref.html" (dict "slug" . "page" $post) -}}
+    {{- $authors = $authors | append $resolved -}}
+  {{- end -}}
+  {{- if $post.Draft -}}
+    {{- $posts = $posts | append (dict "id" $id "status" "draft") -}}
+  {{- else -}}
+    {{- $imagePath := $post.Params.image | default "" -}}
+    {{- if and (not $imagePath) (reflect.IsSlice $post.Params.images) (gt (len $post.Params.images) 0) -}}
+      {{- $imagePath = index $post.Params.images 0 -}}
+    {{- end -}}
+    {{- $image := "" -}}
+    {{- if $imagePath -}}
+      {{- $image = partial "page-asset.html" (dict "page" $post "path" $imagePath) -}}
+    {{- end -}}
+    {{- $tags := $post.Params.tags | default slice -}}
+    {{- $categories := $post.Params.categories | default slice -}}
+    {{- if not (reflect.IsSlice $tags) -}}
+      {{- $tags = slice $tags -}}
+    {{- end -}}
+    {{- if not (reflect.IsSlice $categories) -}}
+      {{- $categories = slice $categories -}}
+    {{- end -}}
+    {{- $excerpt := $post.Params.description | default ($post.Summary | plainify) -}}
+    {{- $excerpt = $excerpt | replaceRE "\\s+" " " | strings.TrimSpace -}}
+    {{- $slug := partial "post-slug.html" $post -}}
+    {{- $origin := $post.Params.origin | default "" -}}
+    {{- if not (in (slice "percona" "community") $origin) -}}
+      {{- errorf "Post %s must set origin to percona or community" $post.File.Path -}}
+    {{- end -}}
+    {{- if eq $origin "percona" -}}
+      {{- range $authors -}}
+        {{- if ne .type "staff" -}}
+          {{- errorf "Percona post %s lists %s, who is community rather than staff" $post.File.Path .id -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $posts = $posts | append (dict
+      "id" $id
+      "status" "publish"
+      "slug" $slug
+      "title" $post.Title
+      "date" ($post.Date.Format "2006-01-02T15:04:05Z07:00")
+      "excerpt" $excerpt
+      "html" ($post.Content | strings.TrimSpace)
+      "tags" $tags
+      "categories" $categories
+      "authors" $authors
+      "origin" $origin
+      "image" ($image | default "")
+      "path" $post.File.Path
+      "expected_url" (partial "public-url.html" $slug)
+    ) -}}
+  {{- end -}}
+{{- end -}}
+{{- dict
+  "version" 1
+  "generated" (now.Format "2006-01-02T15:04:05Z07:00")
+  "asset_base" (site.Params.assetBase | default "")
+  "posts" $posts
+| jsonify (dict "indent" "  ") -}}

@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.percona.com/blog/schema/wordpress-feed.v1.json",
+  "title": "Percona Blog WordPress feed",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "generated", "asset_base", "posts"],
+  "properties": {
+    "version": { "const": 1 },
+    "generated": { "type": "string" },
+    "asset_base": {
+      "type": "string",
+      "description": "Public https origin of static images, without a trailing slash. Empty when image paths are root-relative to the feed URL."
+    },
+    "posts": {
+      "type": "array",
+      "maxItems": 500,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "status"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "status": { "const": "draft" }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "status",
+              "slug",
+              "title",
+              "date",
+              "excerpt",
+              "html",
+              "tags",
+              "categories",
+              "authors",
+              "origin",
+              "image",
+              "path",
+              "expected_url"
+            ],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "status": { "const": "publish" },
+              "slug": { "type": "string", "minLength": 1 },
+              "title": { "type": "string", "minLength": 1 },
+              "date": { "type": "string", "minLength": 1, "description": "Publication date. The publish workflow writes the build time here the first time a post is published." },
+              "excerpt": { "type": "string" },
+              "html": { "type": "string", "minLength": 1 },
+              "tags": { "type": "array", "items": { "type": "string" } },
+              "categories": { "type": "array", "items": { "type": "string" } },
+              "origin": { "type": "string", "enum": ["percona", "community"] },
+              "authors": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["id", "slug", "name", "type", "bio"],
+                  "properties": {
+                    "id": { "type": "string", "minLength": 1 },
+                    "slug": { "type": "string", "minLength": 1 },
+                    "name": { "type": "string", "minLength": 1 },
+                    "type": { "type": "string", "enum": ["staff", "community"] },
+                    "bio": { "type": "string", "description": "Author page body as HTML. Empty when the page has no bio. The plugin stores this on the WordPress user." },
+                    "role": { "type": "string" },
+                    "company": { "type": "string" },
+                    "github": { "type": "string" },
+                    "linkedin": { "type": "string" },
+                    "image": { "type": "string" }
+                  }
+                }
+              },
+              "image": { "type": "string" },
+              "path": { "type": "string" },
+              "expected_url": { "type": "string" }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

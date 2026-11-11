@@ -1,0 +1,8 @@
+{{- $path := .Params.image | default "" -}}
+{{- if and (not $path) (reflect.IsSlice .Params.images) (gt (len .Params.images) 0) -}}
+  {{- $path = index .Params.images 0 -}}
+{{- end -}}
+{{- if not $path -}}
+  {{- return "" -}}
+{{- end -}}
+{{- return partial "page-asset.html" (dict "page" . "path" $path) -}}

@@ -1,0 +1,67 @@
+baseURL: https://www.percona.com/blog/
+locale: en-us
+title: Percona Blog
+timeZone: America/Los_Angeles
+publishDir: tools/public
+resourceDir: tools/resources
+
+# The Hugo project root is the repository root, so authors see posts and
+# authors next to this folder. These mounts replace Hugo's defaults.
+module:
+  mounts:
+    - source: posts
+      target: content/blog
+    - source: authors
+      target: content/authors
+    - source: tools/layouts
+      target: layouts
+    - source: tools/static
+      target: static
+    - source: tools/data
+      target: data
+    - source: tools/archetypes
+      target: archetypes
+
+# Future posts are included so WordPress can hold them as scheduled.
+# Drafts stay out of a normal build, so the HTML preview does not publish them.
+# The WordPress feed passes -D and turns a draft into an id stub with no body.
+buildFuture: true
+
+disableKinds:
+  - RSS
+  - sitemap
+
+outputs:
+  home:
+    - HTML
+    - WordPress
+  section:
+    - HTML
+  page:
+    - HTML
+
+outputFormats:
+  WordPress:
+    mediaType: application/json
+    baseName: wordpress
+    isPlainText: true
+    notAlternative: true
+    root: true
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+  highlight:
+    # Plain <pre><code class="language-*">. WordPress kses and the site's
+    # highlighter keep working; Hugo does not inject Chroma spans.
+    codeFences: false
+
+params:
+  # Address WordPress will publish under. Independent from `hugo server --baseURL`.
+  publicBase: https://www.percona.com/blog
+  # Public origin of images that live next to a post, no trailing slash.
+  # Empty locally: image paths stay root-relative and the plugin joins them
+  # to the feed URL. CI sets HUGO_PARAMS_ASSETBASE to the raw feed branch.
+  assetBase: ""
+  description: Source repository for new Percona Blog posts. percona.com/blog stays on WordPress.

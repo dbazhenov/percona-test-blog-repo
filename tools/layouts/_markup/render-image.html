@@ -1,0 +1,2 @@
+{{- $src := partial "page-asset.html" (dict "page" .Page "path" .Destination) -}}
+<img src="{{ $src }}" alt="{{ .PlainText }}"{{ with .Title }} title="{{ . }}"{{ end }}>

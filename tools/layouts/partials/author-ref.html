@@ -1,0 +1,27 @@
+{{- $author := site.GetPage (printf "/authors/%s" .slug) -}}
+{{- if not $author -}}
+  {{- errorf "Unknown author %q in %s. Add authors/%s/index.md" .slug .page.File.Path .slug -}}
+{{- else -}}
+  {{- $id := $author.Params.id | default "" -}}
+  {{- if ne $id .slug -}}
+    {{- errorf "Author %q in %s needs id %q. The display name is not an id." .slug .page.File.Path .slug -}}
+  {{- end -}}
+  {{- if not (findRE "^[a-z0-9]+(-[a-z0-9]+)*$" $id) -}}
+    {{- errorf "Author %q must be name-surname: lowercase letters, digits, and hyphens. Not name_surname or name.surname." $id -}}
+  {{- end -}}
+  {{- $kind := $author.Params.type | default "" -}}
+  {{- if not (in (slice "staff" "community") $kind) -}}
+    {{- errorf "Author %q must set type to staff or community" $id -}}
+  {{- end -}}
+  {{- $bio := $author.Content | strings.TrimSpace -}}
+  {{- $ref := dict "id" $id "slug" $id "name" ($author.Params.name | default $author.Title) "type" $kind "bio" $bio -}}
+  {{- range $key := slice "role" "company" "github" "linkedin" -}}
+    {{- with index $author.Params $key -}}
+      {{- $ref = merge $ref (dict $key .) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with partial "author-avatar.html" (dict "page" $author) -}}
+    {{- $ref = merge $ref (dict "image" .) -}}
+  {{- end -}}
+  {{- return $ref -}}
+{{- end -}}

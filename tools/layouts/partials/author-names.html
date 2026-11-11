@@ -1,0 +1,8 @@
+{{- range $index, $slug := .Params.authors -}}
+  {{- if $index }}, {{ end -}}
+  {{- with site.GetPage (printf "/authors/%s" $slug) -}}
+    <a href="{{ .RelPermalink }}">{{ .Params.name | default .Title }}</a>
+  {{- else -}}
+    {{ $slug }}
+  {{- end -}}
+{{- end -}}

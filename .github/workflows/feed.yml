@@ -1,0 +1,73 @@
+name: Feed
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: feed-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "0.168.0"
+          extended: false
+      - name: Check the feed
+        run: make -C tools check
+
+  publish:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Stamp the publication date
+        env:
+          BEFORE: ${{ github.event.before }}
+          HEAD: ${{ github.sha }}
+        run: python3 tools/scripts/stamp-publish-date.py
+      - uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "0.168.0"
+          extended: false
+      - name: Package the feed
+        env:
+          HUGO_PARAMS_ASSETBASE: https://raw.githubusercontent.com/${{ github.repository }}/feed
+        run: make -C tools package
+      - name: Publish the feed branch
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: sh tools/scripts/publish-feed-branch.sh
+      - name: Ask WordPress to import
+        if: ${{ vars.WORDPRESS_SYNC_URL != '' }}
+        env:
+          SYNC_URL: ${{ vars.WORDPRESS_SYNC_URL }}
+          SYNC_SECRET: ${{ secrets.WORDPRESS_SYNC_SECRET }}
+        run: |
+          curl --fail-with-body --silent --show-error \
+            --retry 5 --retry-delay 10 --retry-all-errors \
+            -X POST \
+            -H "X-Percona-Blog-Secret: ${SYNC_SECRET}" \
+            "${SYNC_URL}"
+      - name: Store the publication date
+        run: |
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" add -u -- posts
+          if git diff --cached --quiet; then
+            echo "No publication dates to store"
+            exit 0
+          fi
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "Set the publication date of posts published by this build [skip ci]"
+          git push

@@ -1,0 +1,61 @@
+{{ define "main" }}
+{{- $image := partial "featured-image.html" . -}}
+{{- $hideLead := false -}}
+{{- if $image -}}
+  {{- $cover := .Params.image | default "" -}}
+  {{- if not $cover -}}
+    {{- with .Params.images }}{{ $cover = index . 0 }}{{ end -}}
+  {{- end -}}
+  {{- with findRESubmatch `!\[[^\]]*\]\(([^)\s]+)\)` .RawContent 1 -}}
+    {{- $lead := index (index . 0) 1 -}}
+    {{- if and $cover (eq (path.Base $lead) (path.Base $cover)) }}{{ $hideLead = true }}{{ end -}}
+  {{- end -}}
+{{- end -}}
+<article class="post{{ if $image }} has-hero{{ end }}{{ if $hideLead }} hide-lead{{ end }}">
+  <header class="post-hero">
+    <div class="post-heading">
+      {{ if .Draft }}<p class="draft">Draft. This body is not written into wordpress.json.</p>{{ end }}
+      <h1>{{ .Title }}</h1>
+      <p class="post-date"><time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "January 2, 2006" }}</time></p>
+      {{ with .Params.authors }}
+      <p class="author-label">Author</p>
+      <p class="author-name">
+        {{- range $i, $id := . -}}
+          {{- if $i }}, {{ end -}}
+          {{- $who := site.GetPage (printf "/authors/%s" $id) -}}
+          {{- with $who -}}<a href="{{ .RelPermalink }}">{{ .Params.name | default .Title }}</a>{{- else -}}{{ $id }}{{- end -}}
+        {{- end -}}
+      </p>
+      {{ end }}
+      {{ with .Params.categories }}
+      <p class="post-cats">
+        {{ range . }}<a href="{{ printf "categories/%s/" (. | urlize) | relURL }}">{{ . }}</a>{{ end }}
+      </p>
+      {{ end }}
+    </div>
+    {{ with $image }}<img class="hero-image" src="{{ . }}" alt="">{{ end }}
+    {{ if eq .Section "blog" }}
+    {{- $public := partial "public-url.html" (partial "post-slug.html" .) -}}
+    <p class="post-note">
+      {{- with .Params.origin -}}<span>{{ if eq . "community" }}Community{{ else }}Percona{{ end }}</span> · {{ end -}}
+      <a href="{{ $public }}">{{ strings.TrimPrefix "https://" $public }}</a>
+    </p>
+    {{ end }}
+  </header>
+  <div class="post-body">
+    {{ .Content }}
+  </div>
+  {{ if eq .Section "blog" }}
+  <section class="related">
+    <h2>Related posts</h2>
+    <div class="card-grid">
+      {{- $here := .RelPermalink -}}
+      {{- $others := where (where site.RegularPages "Section" "blog") "RelPermalink" "ne" $here -}}
+      {{- range first 3 $others -}}
+        {{- partial "post-card.html" . -}}
+      {{- end -}}
+    </div>
+  </section>
+  {{ end }}
+</article>
+{{ end }}

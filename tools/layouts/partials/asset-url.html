@@ -1,0 +1,12 @@
+{{- $src := strings.TrimSpace . -}}
+{{- $base := site.Params.assetBase | default "" | strings.TrimSuffix "/" -}}
+{{- if or (hasPrefix $src "http://") (hasPrefix $src "https://") (hasPrefix $src "//") -}}
+  {{- return $src -}}
+{{- end -}}
+{{- if and $src (not (hasPrefix $src "/")) -}}
+  {{- $src = printf "/%s" $src -}}
+{{- end -}}
+{{- if and $src $base -}}
+  {{- return printf "%s%s" $base $src -}}
+{{- end -}}
+{{- return $src -}}

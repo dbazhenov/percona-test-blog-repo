@@ -1,0 +1,12 @@
+/tools/public/
+/tools/feed-out/
+/tools/.hugo-cache/
+/tools/resources/
+/public/
+/feed-out/
+/resources/
+/.hugo-cache/
+.hugo_build.lock
+.DS_Store
+**/__pycache__/
+*.pyc

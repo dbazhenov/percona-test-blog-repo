@@ -1,0 +1,21 @@
+{{ define "main" }}
+<section class="page-intro">
+  <h1>{{ .Title }}</h1>
+  {{ with .Content }}<div class="intro-copy">{{ . }}</div>{{ end }}
+</section>
+<section class="feed">
+  <div class="card-grid">
+    {{- range .Pages -}}
+      {{- if eq .Section "blog" -}}
+        {{- partial "post-card.html" . -}}
+      {{- else -}}
+        <article class="card">
+          <div class="card-copy">
+            <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+          </div>
+        </article>
+      {{- end -}}
+    {{- end -}}
+  </div>
+</section>
+{{ end }}

@@ -27,11 +27,11 @@ Path: `posts/<year>/slug/index.md`. Copy `tools/archetypes/blog.md`. A post with
 - `origin`: `percona` or `community`. A `percona` post lists only `staff` authors.
 - `categories`: exact names from `tools/data/wp-categories.txt`. Do not invent one. Ask with an issue.
 - `images`: the first file is the cover. Every post needs a cover at 1200×630, the Open Graph size. If the author knows how it should look, prepare that file. If they do not, leave the cover unset and say in the pull request that the team will make it. Other images sit next to `index.md` and are referenced by filename, `![alt](diagram.png)`. Do not resize them in the build. About 1600px wide is enough for the 855px article column. Use JPEG or WebP for photos, PNG or WebP for screenshots and diagrams. Keep each file around 200–400 KB. A file of 3–4 MB is too heavy. `make -C tools check` does not measure file size. An author portrait is square, about 400px. For a diagram, use a `mermaid` code fence instead of a screenshot. The preview draws it.
-- `draft: true` hides the post from the preview and leaves it unpublished. Deleting the file does not unpublish. To unpublish, keep the file and set `draft: true`.
+- `draft: true` hides the post from the published site and leaves it unpublished. The pull request preview and `make -C tools serve` still show it. Deleting the file does not unpublish. To unpublish, keep the file and set `draft: true`.
 - `date`: the author value is for the preview only. The publish build replaces it when the post first goes out. Do not change `date` on a later edit.
 
 ## Pull request and edits
 
-Open a pull request. `make -C tools check` must pass before asking for review. The post is merged only after an approve from 3 experts. Do not merge with fewer approvals. The same rule applies to an edit of a published post. If the pull request gets no reviewers or is declined, close it. The post did not catch interest. Start a different one.
+Open a pull request. `make -C tools check` must pass before asking for review. When the preview build finishes, GitHub shows **View deployment** on the pull request. The post is merged only after an approve from 3 experts. Do not merge with fewer approvals. The same rule applies to an edit of a published post. If the pull request gets no reviewers or is declined, close it. The post did not catch interest. Start a different one.
 
 Edits: for about three days after publication, change the post in a new pull request. After about three days, do not expect a git edit to replace the published text. Open an issue that names the post and the change.

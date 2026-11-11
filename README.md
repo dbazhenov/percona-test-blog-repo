@@ -30,9 +30,11 @@ The `feed` branch is written by that build. It holds the published files. Do not
 
 For about three days after publication, a change still goes through a new pull request. After about three days, do not expect a git edit to replace the published text. Open an issue, name the post, and describe the change.
 
-## Preview on your computer
+## Preview
 
-After the pull request is open, clone the repository and run the preview. That command needs [Hugo](https://gohugo.io/) 0.168. Opening the pull request does not.
+After the pull request is open, GitHub shows **View deployment** at the bottom of the conversation. That opens a temporary copy of the site and includes drafts. Render removes the copy when the pull request is merged or closed.
+
+To preview on your computer you need [Hugo](https://gohugo.io/) 0.168.
 
 ```bash
 git clone https://github.com/dbazhenov/percona-test-blog-repo.git

@@ -28,11 +28,11 @@ In a post, list this `id` under `authors`. Do not write the display name there.
 4. Set `authors` to one or more author ids. Set `origin` to `percona` or `community`. A `percona` post can list only `staff` authors. Set `categories` to names from `tools/data/wp-categories.txt`. A missing name needs an issue, not a new spelling.
 5. Open a pull request. `make -C tools check` must pass. The post is merged when it has an approve from 3 experts. The publish build then sets `date` to the time that build succeeds and the post goes out. The date you typed is only for the preview. A later edit does not move the publication date.
 
-`draft: true` keeps the post off the preview and unpublished. To take a published post down, set `draft: true` and keep the file. Deleting the file leaves the published post up.
+`draft: true` keeps the post off the published feed and off the main site. The pull request preview still includes it, the same way `make -C tools serve` does. To take a published post down, set `draft: true` and keep the file. Deleting the file leaves the published post up.
 
 ## Review
 
-Ask experts to read the pull request. They can run `make -C tools serve` and open the post. The post is merged only after 3 experts approve it. One or two approvals are not enough. The same rule applies to a pull request that edits a published post.
+Ask experts to read the pull request. **View deployment** opens the built site. They can also run `make -C tools serve` and open the post. The post is merged only after 3 experts approve it. One or two approvals are not enough. The same rule applies to a pull request that edits a published post.
 
 A post sometimes gets no reviewers, or a reviewer declines it. That happens. It means this post did not catch interest. Close it and try a different one.
 

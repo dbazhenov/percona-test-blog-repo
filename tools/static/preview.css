@@ -497,6 +497,7 @@ img { max-width: 100%; height: auto; }
 
 .post-body h2 { margin: 1.6em 0 0.4em; font-size: 28px; }
 .post-body h3 { margin: 1.4em 0 0.4em; font-size: 22px; }
+.post-body h4 { margin: 1.2em 0 0.35em; font-size: 18px; }
 
 .post-body a { text-underline-offset: 2px; }
 
@@ -519,8 +520,7 @@ img { max-width: 100%; height: auto; }
   font: 500 13px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
-.post-body p code,
-.post-body li code {
+.post-body :not(pre) > code {
   padding: 0.1em 0.35em;
   border-radius: 4px;
   background: #efeaff;
@@ -529,18 +529,37 @@ img { max-width: 100%; height: auto; }
   font-size: 0.92em;
 }
 
+.post-body ul:has(> li > input[type="checkbox"]) {
+  padding-left: 1.4em;
+  list-style: none;
+}
+
+.post-body li:has(> input[type="checkbox"]) {
+  list-style: none;
+}
+
+.post-body input[type="checkbox"] {
+  margin: 0 8px 0 0;
+  accent-color: var(--purple);
+  vertical-align: -2px;
+}
+
 .post-body table {
-  display: block;
-  max-width: 100%;
-  overflow: auto;
+  width: 100%;
   border-collapse: collapse;
 }
 
 .post-body th,
 .post-body td {
-  padding: 6px 10px;
+  padding: 8px 12px;
   border: 1px solid var(--line);
   font-size: 14px;
+  text-align: left;
+}
+
+.post-body th {
+  background: var(--code);
+  font-weight: 500;
 }
 
 .related { padding: 24px 0 8px; }

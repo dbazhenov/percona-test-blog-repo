@@ -32,6 +32,6 @@ Path: `posts/<year>/slug/index.md`. Copy `tools/archetypes/blog.md`. A post with
 
 ## Pull request and edits
 
-Open a pull request. `make -C tools check` must pass before asking for review. When the preview build finishes, a comment on the pull request links to the built site. The post is merged only after an approve from 3 experts. Do not merge with fewer approvals. The same rule applies to an edit of a published post. If the pull request gets no reviewers or is declined, close it. The post did not catch interest. Start a different one.
+Open a pull request. `make -C tools check` must pass before asking for review. When the preview build finishes, a comment on the pull request links to the post. The post is merged only after an approve from 3 experts. Do not merge with fewer approvals. The same rule applies to an edit of a published post. If the pull request gets no reviewers or is declined, close it. The post did not catch interest. Start a different one.
 
 Edits: for about three days after publication, change the post in a new pull request. After about three days, do not expect a git edit to replace the published text. Open an issue that names the post and the change.

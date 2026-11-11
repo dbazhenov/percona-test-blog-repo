@@ -72,24 +72,24 @@ jobs:
 
             const lines = [
               marker,
-              'Thank you for opening this pull request.',
+              'Thanks for the pull request.',
               '',
             ]
             if (posts.length === 1) {
-              lines.push(`This is a preview, not the published post: [${posts[0].title}](${posts[0].url})`)
+              lines.push(`This is a preview, roughly how your post will look: [${posts[0].title}](${posts[0].url})`)
             } else if (posts.length > 1) {
-              lines.push('These are previews, not the published posts:')
+              lines.push('This is a preview, roughly how your posts will look:')
               lines.push('')
               for (const post of posts) {
                 lines.push(`- [${post.title}](${post.url})`)
               }
             } else {
-              lines.push(`This is a preview of the site, not the published blog: ${origin}/`)
+              lines.push(`This is a preview of the site: ${origin}/`)
             }
             lines.push('')
-            lines.push('To change the post, push another commit to this same branch. The preview updates from that commit.')
+            lines.push('To change it, push another commit to this same branch.')
             lines.push('')
-            lines.push('The preview includes drafts. Render removes it when the pull request is merged or closed.')
+            lines.push('Drafts show up here too. The preview goes away when the pull request is merged or closed.')
             const body = lines.join('\n')
 
             const comments = await github.paginate(github.rest.issues.listComments, {

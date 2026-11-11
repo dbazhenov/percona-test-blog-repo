@@ -32,7 +32,7 @@ For about three days after publication, a change still goes through a new pull r
 
 ## Preview
 
-After the pull request is open, GitHub shows **View deployment** at the bottom of the conversation. That opens a temporary copy of the site and includes drafts. Render removes the copy when the pull request is merged or closed.
+After the pull request is open, a comment links to a temporary copy of the site. That copy includes drafts. Render deletes it when the pull request is merged or closed.
 
 To preview on your computer you need [Hugo](https://gohugo.io/) 0.168.
 

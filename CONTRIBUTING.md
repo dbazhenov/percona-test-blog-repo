@@ -32,7 +32,7 @@ In a post, list this `id` under `authors`. Do not write the display name there.
 
 ## Review
 
-Ask experts to read the pull request. **View deployment** opens the built site. They can also run `make -C tools serve` and open the post. The post is merged only after 3 experts approve it. One or two approvals are not enough. The same rule applies to a pull request that edits a published post.
+Ask experts to read the pull request. The preview comment opens the built site. They can also run `make -C tools serve` and open the post. The post is merged only after 3 experts approve it. One or two approvals are not enough. The same rule applies to a pull request that edits a published post.
 
 A post sometimes gets no reviewers, or a reviewer declines it. That happens. It means this post did not catch interest. Close it and try a different one.
 

@@ -296,6 +296,14 @@ Two workflows run on the pull request.
 
 ## Changing a published post
 
-For about three days after publication, a fix is a new pull request. Say which post and what changes. The publication date stays the same.
+For the first few days after publication, the post is still yours to fix through the repository. Change the file and open a new pull request, the same way you published it. Say which post it is and what you changed. The publication date stays the same.
 
-After that, the text on the site may have been edited in WordPress, and a commit will not overwrite it. Open an issue, name the post, and describe the change.
+After a few days, SEO and content specialists may polish the post. They do not rewrite your text or change what it says. They make small improvements, for example:
+
+- add or tidy up tags
+- add a call to action at the end
+- adjust headings so search engines and readers understand them better
+
+They make these changes in the WordPress admin panel, not in the repository. If the repository could still update the post, the next import would overwrite their work. So once the post has been polished, editing it through the repository is locked.
+
+You can still ask for a change. [Open an issue](https://github.com/dbazhenov/percona-test-blog-repo/issues/new) in this repository, link the post, and describe what should change and why. The team will make the change in WordPress.

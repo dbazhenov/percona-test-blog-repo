@@ -1,93 +1,142 @@
-# Publish a post
+# Contributing a post
 
-This repository publishes posts on percona.com/blog. Employees and community authors publish through a pull request. After review the post is merged and published automatically.
+All the rules for a post, in one place. For the big picture, start with the [README](README.md). For a walkthrough, read the example for [Perconians](posts/2026/how-a-perconian-publishes/index.md) or for [community authors](posts/2026/community-post-from-a-fork/index.md).
 
-You already have a finished post, for example in a Google Doc, a docx file, a PDF, or Markdown. Ask your AI agent, or prepare the pull request yourself. The pull request adds the post to this repository as Markdown. You also need an author profile. Check the post locally with `make -C tools serve` before you ask for review.
+## Before you start
 
-## Author profile
+- **Perconians** create a branch in this repository. If you cannot push, ask the blog team to add you to the Perconians group.
+- **Community authors** fork the repository and work in the fork. The [community example](posts/2026/community-post-from-a-fork/index.md) explains forking, SSH keys, and pushing step by step.
 
-Create `authors/<id>/index.md` if you do not already have one. Look at the other authors in `authors/`.
+Name the branch `blog/<post-id>`, for example `blog/replication-lag-pt-heartbeat`. A fix to a published post goes on `fix/<post-id>`.
 
-The `id` is the folder name. Use lowercase letters, digits, and hyphens: `name-surname`, for example `pablo-svampa`. The same string is the public address, `/author/name-surname/`.
+## Files
 
-Use a hyphen. These are rejected:
-
-- `name_surname`
-- `name.surname`
-- `Name-Surname`
-
-`name` is the display name, for example `Pablo Svampa`. Set `type` to `staff` or `community`. Fill `role`, `company`, `github`, and `linkedin` when you have them. Put the portrait in the same folder and set `image` to the filename, for example `avatar.jpg`. The text under the front matter is the public bio.
-
-In a post, list this `id` under `authors`. Do not write the display name there.
-
-## Create a post
-
-1. Branch from `main`.
-2. Add the post as `posts/<year>/slug/index.md`. Start from a recent post in `posts/` and replace its text and fields. A post with no images can be a single file, `posts/<year>/slug.md`. Do not put a date in the filename. The publication date is written when the post is published.
-3. Set `id` to the folder name: a short version of the title, three to six lowercase words with hyphens, for example `mysql-connection-pool`. Do not change it later. It is also the public address, `/blog/mysql-connection-pool/`, so you do not need `slug`. Renaming the file is safe while `id` stays. Changing `id` makes a new post.
-4. Set `authors` to one or more author ids. Set `origin` to `percona` or `community`. A `percona` post can list only `staff` authors. Set `categories` to names from `tools/data/wp-categories.txt`. A missing name needs an issue, not a new spelling.
-5. Open a pull request. `make -C tools check` must pass. The post is merged when it has an approve from 3 experts. The publish build then sets `date` to the time that build succeeds and the post goes out. The date you typed is only for the preview. A later edit does not move the publication date.
-
-`draft: true` keeps the post off the published feed and off the main site. The pull request preview still includes it, the same way `make -C tools serve` does. To take a published post down, set `draft: true` and keep the file. Deleting the file leaves the published post up.
-
-## Review
-
-Ask experts to read the pull request. The preview comment links to the post. They can also run `make -C tools serve` and open the post. The post is merged only after 3 experts approve it. One or two approvals are not enough. The same rule applies to a pull request that edits a published post.
-
-A post sometimes gets no reviewers, or a reviewer declines it. That happens. It means this post did not catch interest. Close it and try a different one.
-
-## Images
-
-If the post has images, keep it as a folder. Put `index.md` and the image files side by side. In the text, use the filename:
-
-```markdown
-![Cache diagram](diagram.png)
+```text
+posts/2026/replication-lag-pt-heartbeat/
+  index.md          the post
+  cover.png         the cover, 1200×630
+  lag-chart.png     pictures from the text
+authors/mateo-alvarez/
+  index.md          the author page, only with your first post
+  avatar.png        a square portrait
 ```
 
-The first name under `images` is the cover. Every post needs one, at 1200×630 pixels, the Open Graph size. Make it yourself if you know how it should look. If you do not, say so in the pull request and we will make it. The build does not resize other pictures. The article column is 855px wide, so about 1600px wide is enough. Use JPEG or WebP for photos, and PNG or WebP for screenshots and diagrams. Aim for about 200–400 KB per file. A file of 3–4 MB is too heavy. An author portrait is square, about 400px, shown at 96px.
-
-For a diagram, use a Mermaid block instead of a screenshot. The preview draws it.
-
-````markdown
-```mermaid
-flowchart LR
-  Write --> Review --> Published
-```
-````
-
-## Edit a post
-
-For about three days after publication, open a pull request with the change. Say which post and what should change.
-
-After about three days the published text may already have been edited, and a change in git will not replace it. Do not keep pushing edits. Open an issue, name the post, and describe the change you want.
+- The folder name is the post id: a short version of the title, three to six lowercase words with hyphens. No date in it.
+- The easiest start is to copy the folder of the closest example post and replace the text, pictures, and fields. Do not copy older imported posts: many have a date in the folder name and a `slug`, which new posts do not need.
 
 ## Front matter
 
+The top of `index.md`, between two `---` lines:
+
 ```yaml
-title: "Post title"
-id: post-title
-date: 2026-11-10T09:00:00-08:00
+---
+title: "Measuring replication lag with pt-heartbeat"
+id: replication-lag-pt-heartbeat
+date: "2026-11-12T09:00:00-08:00"
 draft: false
 origin: percona
 description: "One or two sentences. This is the summary on the blog."
 authors:
-  - name-surname
+  - daniil-bazhenov
 categories:
   - MySQL
 tags:
-  - Performance
+  - replication
+  - pt-heartbeat
 images:
-  - diagram.png
+  - cover.png
+---
 ```
 
-`description` is optional. Without it, the summary is the first paragraph. A date without a time is midnight in `America/Los_Angeles`.
+| Field | Required | What to put there |
+| --- | --- | --- |
+| `title` | Yes | The title of the post. It becomes the heading of the page. |
+| `id` | Yes | The folder name. Never change it after publication: a new `id` makes a new post. It is also the address: `percona.com/blog/<id>/`. |
+| `date` | Yes | Any time near today. It is only for the preview. The real date is set when the post is published. |
+| `draft` | Yes | `false` to publish. `true` keeps the post off the blog. |
+| `origin` | Yes | `percona` for Perconians, `community` for community authors. |
+| `description` | No | One or two sentences for the post list. Without it, the first paragraph is used. |
+| `authors` | Yes | Author ids from `authors/`, not display names. A `percona` post lists only `staff` authors. |
+| `categories` | Yes | One to three names from the list below. |
+| `tags` | No | Two to five tags. See below. |
+| `images` | Yes | The cover first. If you have no cover, leave `images` out and say so in the pull request; the team will make one. |
 
-## Look at it on your machine
+To take a published post down, set `draft: true` and keep the file. Deleting the file leaves the post on the blog.
 
-After cloning, from this repository:
+## Categories
+
+Copy the name exactly. The list lives in [`tools/data/wp-categories.txt`](tools/data/wp-categories.txt).
+
+| Group | Categories |
+| --- | --- |
+| Databases | MySQL, MariaDB, PostgreSQL, MongoDB, Valkey |
+| Percona products | Percona Server for MySQL, XtraDB Cluster (PXC), Xtrabackup, Percona Monitoring and Management, ProxySQL, Percona Software, Percona Services |
+| Topics | Kubernetes, Operator, Cloud, Security, Monitoring, Benchmarks, AI & Vector, Storage Engine, Open Source, Insight for DBAs, Insight for Developers, Database Trends |
+
+Start with the database. Add a product or a topic only if the post is about it. If nothing fits, do not invent a name; ask in the pull request.
+
+## Tags
+
+- Two to five tags.
+- Reuse the spelling other posts already use. One tag `Benchmarks` is useful; `Benchmarks`, `Benchmarking`, and `benchmark` side by side are not.
+- Name the tool or feature: `pgvector`, `InnoDB`, `replication`, `Percona Toolkit`.
+- Do not repeat the category, your name, or the word Percona alone.
+
+## Text
+
+- Do not start with `# Title`. The title comes from `title`. Sections start at `##`.
+- Name the language of code blocks: ```` ```sql ````, ```` ```bash ````.
+- A diagram can be a [Mermaid](https://mermaid.js.org/intro/syntax-reference.html) block instead of a screenshot. The preview draws it.
+- The [Perconian example](posts/2026/how-a-perconian-publishes/index.md) ends with every formatting element a post can use.
+
+## Images
+
+- Put pictures next to `index.md` and link them by filename: `![What the picture shows](lag-chart.png)`.
+- The cover is 1200×630, the size used when the post is shared.
+- The text column is 855px wide, so about 1600px wide is enough. Use JPEG or WebP for photos, PNG or WebP for screenshots.
+- Keep each file around 200–400 KB. A file of 3–4 MB is too heavy.
+
+## Author page
+
+With your first post, add `authors/<name-surname>/index.md`:
+
+```yaml
+---
+id: mateo-alvarez
+name: "Mateo Alvarez"
+type: community
+role: "Database engineer"
+company: "Fieldnote Analytics"
+github: "https://github.com/..."
+linkedin: "https://www.linkedin.com/in/..."
+image: avatar.png
+---
+
+A few sentences about you. This is the bio under your posts.
+```
+
+The id is lowercase with hyphens: `name-surname`. Not `name_surname`, not `name.surname`, no capitals. `type` is `staff` for Perconians and `community` for everyone else. The portrait is a square of about 400px next to `index.md`.
+
+## Check and preview
+
+The pull request does both for you: the first comment links to a preview, and the Feed check turns red if a file is wrong.
+
+To check on your computer, install [Hugo](https://gohugo.io/) 0.168 or newer and Python 3:
 
 ```bash
-make -C tools serve
+make -C tools serve    # preview at http://localhost:1314/
+make -C tools check    # the same check the pull request runs
 ```
 
-Open http://localhost:1314/ . That server includes drafts. Before the pull request, run `make -C tools check`.
+The check catches a missing author page, a malformed author id, a category that is not on the list, and a picture the text names but that is not next to the post. It does not read the writing.
+
+## Review
+
+- Three approvals from people who know the subject. Ask them, or wait for the blog team to find reviewers.
+- Fix comments by pushing to the same branch. The preview updates.
+- No reviewers, or declined: close the pull request and try another post.
+
+## After publication
+
+- The first few days: change the post in a new pull request on `fix/<post-id>`.
+- After that, the blog team may polish the post in WordPress, and the repository stops updating it. [Open an issue](https://github.com/dbazhenov/percona-test-blog-repo/issues/new) with a link to the post and what should change.

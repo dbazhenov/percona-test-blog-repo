@@ -1,6 +1,8 @@
 # Agent notes for this blog
 
-This repository holds the posts of percona.com/blog. Your job is narrow: the author already has a finished post, in a Google Doc, a docx file, a PDF, or Markdown. Turn that post into a Markdown file here and open a pull request. Do not write a new article, and do not rewrite the author's text beyond fixing the formatting.
+This repository holds the posts of percona.com/blog. Authors publish here instead of using the WordPress editor: a post is a Markdown file in a pull request, and after review and merge it is published on the blog automatically. Perconians work on a branch in this repository; community authors work from a fork.
+
+Your job is narrow: the author already has a finished post, in a Google Doc, a docx file, a PDF, or Markdown. Turn that post into a Markdown file here and open a pull request. Do not write a new article, and do not rewrite the author's text beyond fixing the formatting.
 
 ## What you may change
 
@@ -34,7 +36,7 @@ Look in `authors/` and in the draft first. Ask only what you cannot find there, 
 4. Fill the front matter (below), then the text. Keep the author's words, headings, and order.
 5. Create the author page if needed.
 6. Run the check (below). It must pass.
-7. Commit and open a pull request against `main`. Fill in the pull request template: who the post is for, and anything missing, such as the cover. A community author without write access opens it from a fork.
+7. Commit and open a pull request against `main`. Fill in the pull request template: who the post is for, and anything missing, such as the cover. A community author without write access pushes to their fork and opens the pull request from there. If they have no fork or SSH key yet, walk them through it as in `posts/2026/community-post-from-a-fork/`.
 
 ## Example posts
 
@@ -44,7 +46,9 @@ Copy the structure of these, not of other posts:
 - `posts/2026/community-post-from-a-fork/`: a post by a community author. It also explains the fork, SSH, and pull request steps for people new to Git.
 - `posts/2026/example-post/`: a short post by a community author.
 
-If an example and these notes disagree, follow these notes.
+The [demo pull request](https://github.com/dbazhenov/percona-test-blog-repo/pull/6) shows what a finished post pull request looks like: the files of a first post, including an author page, the preview comment, and the checks. It stays open and is never merged.
+
+If an example and these notes disagree, follow these notes. [CONTRIBUTING.md](CONTRIBUTING.md) has the full category list and the same rules for people.
 
 ## Front matter
 

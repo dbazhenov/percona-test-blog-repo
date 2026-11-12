@@ -1,76 +1,90 @@
-# percona/blog demo
+# Percona Blog
 
-This repository publishes posts on percona.com/blog. Employees and community authors can publish. A post is submitted as a pull request and goes through review. After review it is merged and published automatically.
+This repository is the new way to publish posts on [percona.com/blog](https://www.percona.com/blog/). A post is a Markdown file. You add it here in a pull request, people who know the subject review it, and after the merge it is published on the blog automatically. Nobody needs the WordPress editor or the admin panel.
 
-## How to publish a post
+Perconians and community authors publish the same way. The community blog at percona.community will be merged into percona.com/blog and closed, so community posts come here too.
 
-1. You already have a finished post, for example in a Google Doc, a docx file, a PDF, or Markdown.
-2. Ask your AI agent, or prepare the pull request yourself. The pull request adds the post to this repository as Markdown. Notes for an agent are in [AGENTS.md](AGENTS.md).
-3. Create the post as `posts/<year>/<id>/index.md`. The `id` is a short version of the title, three to six lowercase words with hyphens. It is also the public address, `/blog/<id>/`. Do not put a date in it. Start from a recent post in `posts/` and replace its text and fields.
-4. Put images in the same folder as the post. When the post has images, use `posts/<year>/slug/index.md` and place the image files next to it. In the text, link the filename, for example `diagram.png`. The first name in `images` is the cover, 1200×630.
-5. Check that your author profile exists, or create `authors/<id>/index.md`. Look at the other authors in `authors/`. The `id` is the folder name, `name-surname`, and the post lists that id under `authors`.
+## Start with the examples
 
-## Examples
+Four example posts show the whole thing. Each one is also a guide.
 
-Finished posts are in [`posts/`](posts/). Author profiles are in [`authors/`](authors/).
+| Example | For | What is in it |
+| --- | --- | --- |
+| [How a Perconian publishes a post](https://apps.percona.community/new-wordpress-blog/how-a-perconian-publishes/) ([source](posts/2026/how-a-perconian-publishes/index.md)) | Perconians | The whole process: the post file, front matter, categories and tags, the preview, review, changing a published post, and every formatting element. |
+| [Your first community post, from a fork](https://apps.percona.community/new-wordpress-blog/community-post-from-a-fork/) ([source](posts/2026/community-post-from-a-fork/index.md)) | Community authors | Forking the repository, an SSH key, cloning, branches, pushing, and how an AI agent can do most of it. Written for people new to Git. |
+| [Example post](https://apps.percona.community/new-wordpress-blog/example-post/) ([source](posts/2026/example-post/index.md)) | Everyone | A short tour of the Markdown a post can use: headings, lists, a table, code, a diagram, images. |
+| [Demo pull request](https://github.com/dbazhenov/percona-test-blog-repo/pull/6) | Everyone | A post pull request that stays open on purpose: the preview comment, the checks, and the files a first post adds. |
 
-[Semantic search on PostgreSQL, part 1](posts/2026/semantic-search-on-postgresql-part-1/index.md) includes a Mermaid diagram. The field list is in [CONTRIBUTING.md](CONTRIBUTING.md).
+## How it works
 
-## Review
+1. Write the post wherever you like: Google Docs, Word, or straight in Markdown.
+2. Open a pull request with the post, yourself or with an AI agent.
+3. The first comment on the pull request links to a preview of the post.
+4. Reviewers leave comments. You push fixes to the same branch, and the preview updates.
+5. After three approvals the pull request is merged.
+6. The post is sent to WordPress and published on percona.com/blog.
 
-Review starts when the pull request is open. Ask reviewers to read that pull request. The post is merged only after 3 experts approve it. One or two approvals are not enough. The same rule applies to an edit of a published post.
-
-A pull request with no reviewers, or one that is declined, did not catch interest. Close it and try a different post.
-
-## When it is published
-
-The post is published automatically after the merge. The same build can be started by hand from Actions, Feed, Run workflow. A push straight to main does not publish. The publication date is the time that build finishes. It is not the date in the filename, and it is not the date you typed for the preview. A later edit does not move that date.
-
-The `feed` branch is written by that build. It holds the published files. Do not commit to it, and do not open a pull request against it. The next build replaces the branch.
-
-For about three days after publication, a change still goes through a new pull request. After about three days, do not expect a git edit to replace the published text. Open an issue, name the post, and describe the change.
-
-## Preview
-
-After the pull request is open, a comment links to the post. That copy includes drafts. Push another commit to the same branch to update it. Render deletes the copy when the pull request is merged or closed.
-
-To preview on your computer you need [Hugo](https://gohugo.io/) 0.168.
-
-```bash
-git clone https://github.com/dbazhenov/percona-test-blog-repo.git
-cd percona-test-blog-repo
-make -C tools serve
-```
-
-Open http://localhost:1314/ . This preview includes drafts. `make -C tools preview` builds the HTML without drafts.
-
-## Check for mistakes
-
-Before you ask for review, from the repository root:
-
-```bash
-make -C tools check
-```
-
-The check fails when an author page is missing, an author id is malformed, a category is not in `tools/data/wp-categories.txt`, or an image is named in the post but the file is not next to it. It does not judge the writing or the file size. Look at the preview, and check that each image is about 200–400 KB. A file of 3–4 MB is too heavy.
-
-`draft: true` keeps the post off the published feed. Locally it is still visible with `make -C tools serve`.
-
-## Images
-
-Every post needs a cover, 1200×630 pixels. That is the Open Graph size used when the post is shared. The cover is the first name in `images`. Make it yourself if you know how it should look. If you do not, say so in the pull request and we will make it.
-
-Other pictures in the post sit next to `index.md`. The build does not resize them. The article column is 855px wide, so about 1600px wide is enough. Use JPEG or WebP for photos, and PNG or WebP for screenshots and diagrams. Aim for about 200–400 KB per file. A file of 3–4 MB is too heavy.
-
-An author portrait is a square file next to `authors/<id>/index.md`, named in `image`. It is shown at 96px. A square of about 400px is enough.
-
-## Diagrams
-
-For a diagram, use a Mermaid block instead of a screenshot. The preview draws it.
-
-````markdown
 ```mermaid
 flowchart LR
-  Write --> Review --> Published
+  A[Write the post] --> B[Open a pull request]
+  B --> C[Preview link in the first comment]
+  C --> D[Review and fixes]
+  D --> E[Three approvals, merge]
+  E --> F[Published on percona.com/blog]
 ```
-````
+
+## Perconians and community authors
+
+| | Perconians | Community authors |
+| --- | --- | --- |
+| Where you work | In this repository, on a branch. The Perconians group has access. | In your own fork of this repository. |
+| Branch name | `blog/<post-id>` | `blog/<post-id>`, in your fork |
+| Front matter | `origin: percona` | `origin: community` |
+| Author page | `type: staff` | `type: community` |
+| Start with | [How a Perconian publishes a post](posts/2026/how-a-perconian-publishes/index.md) | [Your first community post, from a fork](posts/2026/community-post-from-a-fork/index.md) |
+
+Everything else is the same: the files, the review, the preview, and the publishing.
+
+## With an AI agent
+
+The easiest way is to give your agent a link to this repository and your draft:
+
+> Here is how to publish on the Percona blog: https://github.com/dbazhenov/percona-test-blog-repo. Help me publish my draft from ~/Downloads/post.docx.
+
+Cursor, Claude Code, and similar agents read [AGENTS.md](AGENTS.md) (Claude Code through [CLAUDE.md](CLAUDE.md)). It tells them where the files go, which rules to follow, and what not to touch. They prepare the post and the pull request; people still review and merge it.
+
+## Review and publishing
+
+- A post is merged after **three approvals** from people who know the subject. If you know them, ask them to review. If not, wait: the blog team finds reviewers.
+- If nobody picks a post up, or a reviewer declines it, close the pull request and try another post.
+- After the merge, the post is published automatically. The publication date is set at that moment. It is not the date in the file.
+- For the first few days after publication, a fix to the post goes through a new pull request, on a branch named `fix/<post-id>`.
+- After that, the blog team may polish the post in WordPress, and the repository no longer updates it. To change it, [open an issue](https://github.com/dbazhenov/percona-test-blog-repo/issues/new).
+
+## For the blog team
+
+- **Review** happens in pull requests. The preview link is in the first comment. Approve with a review, not with a comment.
+- **Merge** after three approvals. Publishing starts on its own; watch it in [Actions → Feed](https://github.com/dbazhenov/percona-test-blog-repo/actions/workflows/feed.yml).
+- **Publish again by hand** from Actions → Feed → Run workflow, for example after a direct fix on `main`. A plain push to `main` does not publish.
+- **Stop updates from git** for a post you edited in WordPress: open it in the editor and check *Block updates from git*. Later changes in the repository will not overwrite it.
+- **Categories** come from [`tools/data/wp-categories.txt`](tools/data/wp-categories.txt). A new category has to exist in WordPress first, then be added there.
+
+## What is in this repository
+
+| Path | What it holds |
+| --- | --- |
+| [`posts/`](posts/) | The posts, one folder per post: `posts/<year>/<post-id>/index.md` with its pictures next to it. |
+| [`authors/`](authors/) | Author pages: `authors/<name-surname>/index.md` with a square portrait. |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md) | All the rules for a post in one place: fields, categories, tags, images, checks. |
+| [`AGENTS.md`](AGENTS.md) | Instructions for AI agents. |
+| `tools/` | The build and the preview. Authors do not need to touch it. |
+| `.github/` | The workflows that check, preview, and publish. |
+
+## Preview on your computer
+
+The pull request preview is enough for most authors. To see a post before you open a pull request, install [Hugo](https://gohugo.io/) 0.168 or newer and Python 3, then from the repository folder:
+
+```bash
+make -C tools serve    # preview at http://localhost:1314/ , drafts included
+make -C tools check    # the same check the pull request runs
+```

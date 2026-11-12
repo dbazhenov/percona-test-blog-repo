@@ -78,7 +78,9 @@ The title from the front matter is shown at the top of the page as the post head
 
 ## Where to put the files
 
-Create a branch from `main`. The easiest start is a recent post in [`posts/`](https://github.com/dbazhenov/percona-test-blog-repo/tree/main/posts): copy its folder, rename it, and replace the text, the pictures, and the fields with your own. Give it a new `id` and `slug`, or it will clash with the post you copied. Real posts show how everything fits together better than any template.
+Create a branch from `main` and name it after the post: `blog/` plus the post's `id`. This post lives on `blog/how-a-perconian-publishes`. A fix to a published post goes on `fix/` plus the `id`, for example `fix/how-a-perconian-publishes`. Use lowercase words with hyphens, without dates or your name. Then anyone looking at the list of branches can tell which post each one is about.
+
+The easiest start is a recent post in [`posts/`](https://github.com/dbazhenov/percona-test-blog-repo/tree/main/posts): copy its folder, rename it, and replace the text, the pictures, and the fields with your own. Give it a new `id` and `slug`, or it will clash with the post you copied. Real posts show how everything fits together better than any template.
 
 A post with pictures is a folder: `posts/<year>/<name>/index.md`, with the image files next to `index.md`. In the text you link a picture by its filename, as this post does with `steps.png`. A post with no pictures can be one file, `posts/<year>/<name>.md`. Do not put a date in the name.
 

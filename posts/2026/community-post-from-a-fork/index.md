@@ -63,7 +63,11 @@ It looks like a lot, but most of it is a one-time setup. Your second post starts
 
 You do not have to type all of this yourself. AI coding agents such as Cursor and Claude Code are good at exactly this kind of setup: they can install Git, create an SSH key, clone your fork, and turn your draft into a post file. The repository has notes for agents, so they know where files go and which rules to follow.
 
-You can ask in plain words, for example:
+The easiest start is to give the agent a link to this post or to the [blog repository](https://github.com/dbazhenov/percona-test-blog-repo), and your draft:
+
+- "Here is how to publish a community post on the Percona blog: https://github.com/dbazhenov/percona-test-blog-repo. Help me publish my draft from ~/Downloads/post.docx."
+
+The agent reads the instructions and walks you through the rest. You can also ask for one step at a time, in plain words:
 
 - "Help me create an SSH key and add it to my GitHub account."
 - "Clone my fork of percona-test-blog-repo and create a branch for a new post."

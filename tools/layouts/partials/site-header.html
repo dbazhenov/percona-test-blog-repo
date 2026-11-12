@@ -1,7 +1,9 @@
 {{- $current := .RelPermalink -}}
 {{- $yours := slice -}}
 {{- range split (site.Params.previewposts | default "") " " -}}
-  {{- with site.GetPage . -}}{{- $yours = $yours | append . -}}{{- end -}}
+  {{- if . -}}
+    {{- with site.GetPage . -}}{{- $yours = $yours | append . -}}{{- end -}}
+  {{- end -}}
 {{- end -}}
 <div class="topbar">
   <p>Author preview. Readers still open the post on percona.com/blog.</p>

@@ -1,10 +1,35 @@
 # Category names exactly as they exist on percona.com/blog.
 # The sync plugin does not create categories. A post category missing in
 # WordPress is skipped and reported; the post is still imported.
-# Replace this starter list with the live WordPress category names.
+# Each name here has a page at percona.com/blog/category/<slug>/.
 # Lines starting with # are comments.
+
+# Databases
 MySQL
 MariaDB
 PostgreSQL
 MongoDB
 Valkey
+
+# Percona products
+Percona Server for MySQL
+XtraDB Cluster (PXC)
+Xtrabackup
+Percona Monitoring and Management
+ProxySQL
+Percona Software
+Percona Services
+
+# Topics
+Kubernetes
+Operator
+Cloud
+Security
+Monitoring
+Benchmarks
+AI & Vector
+Storage Engine
+Open Source
+Insight for DBAs
+Insight for Developers
+Database Trends

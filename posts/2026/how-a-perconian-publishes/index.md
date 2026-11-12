@@ -249,29 +249,39 @@ The text column is 855px wide, so a picture about 1600px wide is enough. Keep ea
 
 ## Before you ask for review
 
-Look at the post on your machine:
+Look at the post the way readers will see it before you ask anyone to read it. There are two ways to do that, and you only need one.
+
+### The preview link in the pull request
+
+This is the easy way, and it needs nothing on your computer. Open the pull request, and within a few minutes the first comment links to a preview of your post. Every time you push a change to the same branch, the preview is rebuilt.
+
+The pull request also checks the files. If something is wrong, such as a missing author page, a category that is not on the list, or a picture the text names but that is not next to the post, the Feed check turns red and says what to fix.
+
+### A preview on your computer
+
+If you want to see the post before you open a pull request, build it locally. You need [Hugo](https://gohugo.io/) 0.168 or newer. From the repository folder, run:
 
 ```bash
 make -C tools serve
 ```
 
-Open http://localhost:1314/ . Drafts show up there.
+Open http://localhost:1314/ . Drafts show up there too, and the page reloads when you save the file.
 
-Then run the check:
+When the post looks right, stop the preview with Ctrl+C and run the same check the pull request runs:
 
 ```bash
 make -C tools check
 ```
 
-It catches a missing author page, a malformed author id, a category that is not on the list, and a picture that the text names but that is not next to the post. It does not read the writing.
+It catches the same problems as the Feed check. It does not read the writing.
+
+## What happens on the pull request
 
 Ask two or three people who know the subject to review the pull request. It is merged after three approvals. If nobody picks it up, or a reviewer declines it, close it and try another post.
 
 While the pull request is open, you edit the post the same way you wrote it. Change the file, commit, and push to the same branch. The preview is rebuilt, and reviewers see the new version in the same pull request. Answer a reviewer's comment, or resolve it once it is fixed.
 
-## What happens on the pull request
-
-Two workflows run.
+Two workflows run on the pull request.
 
 **Preview comment** posts one comment with a link to your post on the preview site. Each new commit on the same branch rebuilds the preview. The preview shows how the post will look. It is not published. Render deletes it when the pull request is merged or closed.
 

@@ -1,3 +1,8 @@
+{{- $current := .RelPermalink -}}
+{{- $yours := slice -}}
+{{- range split (site.Params.previewposts | default "") " " -}}
+  {{- with site.GetPage . -}}{{- $yours = $yours | append . -}}{{- end -}}
+{{- end -}}
 <div class="topbar">
   <p>Author preview. Readers still open the post on percona.com/blog.</p>
 </div>
@@ -5,18 +10,21 @@
   <a class="logo" href="{{ site.Home.RelPermalink }}">
     <img src="{{ "percona-logo.svg" | relURL }}" alt="Percona" width="168" height="36">
   </a>
-  <p class="repo-mark">hugo repository</p>
   <nav class="nav-main" aria-label="Primary">
-    <span>Database Technology</span>
-    <span>Services</span>
-    <span>Use Cases</span>
-    <span>Resources</span>
-    <span>Community</span>
-    <span>Company</span>
+    <a href="{{ site.Home.RelPermalink }}"{{ if eq $current site.Home.RelPermalink }} aria-current="page"{{ end }}>All posts</a>
+    {{- range site.Params.examples }}
+      {{- $label := .label }}
+      {{- with site.GetPage .page }}
+    <a href="{{ .RelPermalink }}"{{ if eq $current .RelPermalink }} aria-current="page"{{ end }}>{{ $label }}</a>
+      {{- end }}
+    {{- end }}
+    <a href="{{ site.Params.repoURL }}">Repository</a>
   </nav>
+  {{- with $yours }}
   <div class="nav-tools">
-    <a class="downloads" href="https://www.percona.com/downloads">Downloads</a>
-    <a href="{{ site.Home.RelPermalink }}">Blog</a>
-    <a class="contact" href="https://www.percona.com/">Contact Us</a>
+    {{- range . }}
+    <a class="your-post" href="{{ .RelPermalink }}"{{ if eq $current .RelPermalink }} aria-current="page"{{ end }}>{{ if eq (len $yours) 1 }}Your post{{ else }}{{ .Title | truncate 32 }}{{ end }}</a>
+    {{- end }}
   </div>
+  {{- end }}
 </header>

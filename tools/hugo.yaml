@@ -65,3 +65,13 @@ params:
   # to the feed URL. CI sets HUGO_PARAMS_ASSETBASE to the raw feed branch.
   assetBase: ""
   description: Source repository for new Percona Blog posts. percona.com/blog stays on WordPress.
+  repoURL: https://github.com/dbazhenov/percona-test-blog-repo
+  # Header links to the example posts. A page that does not exist yet is skipped.
+  examples:
+    - label: Perconian example
+      page: /blog/2026/how-a-perconian-publishes
+    - label: Community example
+      page: /blog/2026/community-post-from-a-fork
+  # Space-separated page paths of the posts a pull request changes, such as
+  # /blog/2026/my-post. render-build.sh sets HUGO_PARAMS_PREVIEWPOSTS.
+  previewPosts: ""

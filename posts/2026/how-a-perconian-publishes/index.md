@@ -20,9 +20,17 @@ This is an example post, and it is also the instructions. It shows how a Perconi
 
 ## How it works
 
-Write the post wherever you like: Google Docs, Word, or straight in Markdown. Then open a pull request in this repository yourself, or ask an AI agent to turn your draft into one. The first comment on the pull request links to a preview of your post.
+A post goes from your draft to percona.com in a few steps:
 
-After that, you wait for review. Reviewers read the post and leave comments, and you push fixes to the same branch. After three approvals the pull request is merged. GitHub Actions builds the post and asks percona.com to import it, and the post is published. The publication date is then written into your post file.
+1. Write the post wherever you like: Google Docs, Word, or straight in Markdown.
+2. Open a pull request in this repository yourself, or ask an AI agent to turn your draft into one.
+3. Open the preview. The first comment on the pull request links to it, so you can see how the post will look on the blog.
+4. Wait for review. Reviewers read the post and leave comments. You answer them and push fixes to the same branch, and the preview updates.
+5. After three approvals, the pull request is merged.
+6. GitHub Actions builds the post and asks percona.com to import it. The post is published.
+7. The publication date is written into your post file, so the repository and the site agree.
+
+The same process as a diagram:
 
 ```mermaid
 flowchart TD
@@ -36,6 +44,8 @@ flowchart TD
   G --> H[The post is published on percona.com]
   H --> I[The publication date is written into your post]
 ```
+
+You can draw diagrams like this in your own posts. They are written in [Mermaid syntax](https://mermaid.js.org/intro/syntax-reference.html): flowcharts, sequence diagrams, timelines, and more. The source of this one is in "Formatting examples" below.
 
 The rest of this post goes through each step.
 
@@ -191,7 +201,7 @@ FROM pg_extension
 WHERE extname = 'vector';
 ```
 
-A diagram is a Mermaid block. The preview draws it, so you do not need to paste a screenshot. The diagram in "How it works" starts like this:
+A diagram is a [Mermaid](https://mermaid.js.org/intro/syntax-reference.html) block. The preview draws it, so you do not need to paste a screenshot. The diagram in "How it works" starts like this:
 
 ````markdown
 ```mermaid

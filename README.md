@@ -10,12 +10,12 @@ Four example posts show the whole thing. Each one is also a guide.
 
 | Example | For | What is in it |
 | --- | --- | --- |
-| [How a Perconian publishes a post](https://apps.percona.community/new-wordpress-blog/how-a-perconian-publishes/) ([source](posts/2026/how-a-perconian-publishes/index.md)) | Perconians | The whole process: the post file, front matter, categories and tags, the preview, review, changing a published post, and every formatting element. |
-| [Your first community post, from a fork](https://apps.percona.community/new-wordpress-blog/community-post-from-a-fork/) ([source](posts/2026/community-post-from-a-fork/index.md)) | Community authors | Forking the repository, an SSH key, cloning, branches, pushing, and how an AI agent can do most of it. Written for people new to Git. |
-| [Example post](https://apps.percona.community/new-wordpress-blog/example-post/) ([source](posts/2026/example-post/index.md)) | Everyone | A short tour of the Markdown a post can use: headings, lists, a table, code, a diagram, images. |
+| [How a Perconian publishes a post](https://apps.percona.community/blog-prototype/how-a-perconian-publishes/) ([source](posts/2026/how-a-perconian-publishes/index.md)) | Perconians | The whole process: the post file, front matter, categories and tags, the preview, review, changing a published post, and every formatting element. |
+| [Your first community post, from a fork](https://apps.percona.community/blog-prototype/community-post-from-a-fork/) ([source](posts/2026/community-post-from-a-fork/index.md)) | Community authors | Forking the repository, an SSH key, cloning, branches, pushing, and how an AI agent can do most of it. Written for people new to Git. |
+| [Example post](https://apps.percona.community/blog-prototype/example-post/) ([source](posts/2026/example-post/index.md)) | Everyone | A short tour of the Markdown a post can use: headings, lists, a table, code, a diagram, images. |
 | [Demo pull request](https://github.com/dbazhenov/percona-test-blog-repo/pull/6) | Everyone | A post pull request that stays open on purpose: the preview comment, the checks, and the files a first post adds. |
 
-The published examples are on the demo WordPress blog: [apps.percona.community/new-wordpress-blog](https://apps.percona.community/new-wordpress-blog/). Posts merged in this repository appear there the same way they will on percona.com/blog.
+The published examples are on the demo WordPress blog: [apps.percona.community/blog-prototype](https://apps.percona.community/blog-prototype/). Posts merged in this repository appear there the same way they will on percona.com/blog.
 
 ## How it works
 

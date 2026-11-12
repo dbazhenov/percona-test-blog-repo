@@ -18,7 +18,7 @@ Do not mention the publishing system in commit messages or in text you add to a 
 
 ## Ask the author first
 
-Ask, rather than guess:
+Look in `authors/` and in the draft first. Ask only what you cannot find there, rather than guess:
 
 - Their author id, `name-surname`. Check `authors/` for an existing page.
 - If there is no page: display name, role, company, a short bio, a square portrait, GitHub and LinkedIn if they want them.
@@ -29,7 +29,7 @@ Ask, rather than guess:
 ## Steps
 
 1. Create a branch from `main` named `blog/<id>`, for example `blog/mysql-connection-pool`.
-2. Pick a recent post in `posts/` with a similar shape and use it as the model. Do not use `tools/archetypes/blog.md`: it sets `draft: true`, and a draft is never published.
+2. Pick a recent post in `posts/` with a similar shape and use it as the model for the text. Many older posts were imported from WordPress with a date in the folder name, a dated `id`, and a `slug`. Do not copy those: when a post and these notes disagree, follow these notes. Do not use `tools/archetypes/blog.md` either: it sets `draft: true`, and a draft is never published.
 3. Create `posts/<year>/<id>/index.md`. Put images next to it. A post with no images may be a single file, `posts/<year>/<id>.md`.
 4. Fill the front matter (below), then the text. Keep the author's words, headings, and order.
 5. Create the author page if needed.
@@ -55,19 +55,22 @@ images:
   - cover.png
 ```
 
-- `id`: the folder name, lowercase words with hyphens. No date in it. Set it once and never change it: a new `id` makes a new post.
+- `id`: the folder name. A short version of the title, three to six lowercase words with hyphens: `replication-lag-pt-heartbeat`, not the whole title and not the draft's filename. No date in it. Set it once and never change it: a new `id` makes a new post.
 - `slug`: leave it out. The public address is `percona.com/blog/<id>/`.
 - `date`: any time near today. It is only for the preview. The real date is written when the post is published.
 - `draft: false` for a post that should be published.
+- `origin`: follows the author, not the topic. A `staff` author writes `percona` posts, a `community` author writes `community` posts.
+- `description`: one or two sentences. The author's opening lines, lightly trimmed, are fine.
 - `authors`: author ids, not display names. A `percona` post lists only `staff` authors.
 - `categories`: one to three names, copied exactly from `tools/data/wp-categories.txt`. Start with the database, then a Percona product or a topic if the post is about one. Do not invent a name. If nothing fits, say so in the pull request.
-- `tags`: two to five. Reuse the spelling other posts already use. Do not repeat the category, the author's name, or the company.
-- `images`: the first file is the cover.
+- `tags`: two to five. Reuse the spelling other posts already use. Do not repeat the category, the author's name, or the word Percona alone. Product names such as `Percona Toolkit` or `pt-heartbeat` are good tags.
+- `images`: the first file is the cover, 1200×630. Do not list an inline picture here. If there is no cover yet, leave `images` out entirely and say so in the pull request.
 
 ## Text
 
 - Do not start the text with `# Title`. The title comes from `title`. Sections start at `##`.
 - Images sit next to `index.md` and are linked by filename: `![What the picture shows](diagram.png)`. About 1600px wide is enough. Keep each file around 200–400 KB. Use JPEG or WebP for photos, PNG or WebP for screenshots.
+- If a picture does not match what the text says about it, keep it, and point it out in the pull request. Do not redraw or replace it.
 - A diagram can be a `mermaid` code block instead of a screenshot. The preview draws it.
 - Code blocks name the language: ```` ```sql ````, ```` ```bash ````.
 

@@ -24,7 +24,7 @@ In a post, list this `id` under `authors`. Do not write the display name there.
 
 1. Branch from `main`.
 2. Add the post as `posts/<year>/slug/index.md`. Start from a recent post in `posts/` and replace its text and fields. A post with no images can be a single file, `posts/<year>/slug.md`. Do not put a date in the filename. The publication date is written when the post is published.
-3. Set `id` once, to the original filename without `.md`: `mysql-connection-pool`. Do not change it later. That filename is the public address, `/blog/mysql-connection-pool/`. Set `slug` only when the public address should differ. Renaming the file is safe while `id` stays. Changing `id` makes a new post.
+3. Set `id` to the folder name: a short version of the title, three to six lowercase words with hyphens, for example `mysql-connection-pool`. Do not change it later. It is also the public address, `/blog/mysql-connection-pool/`, so you do not need `slug`. Renaming the file is safe while `id` stays. Changing `id` makes a new post.
 4. Set `authors` to one or more author ids. Set `origin` to `percona` or `community`. A `percona` post can list only `staff` authors. Set `categories` to names from `tools/data/wp-categories.txt`. A missing name needs an issue, not a new spelling.
 5. Open a pull request. `make -C tools check` must pass. The post is merged when it has an approve from 3 experts. The publish build then sets `date` to the time that build succeeds and the post goes out. The date you typed is only for the preview. A later edit does not move the publication date.
 

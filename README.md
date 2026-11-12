@@ -6,7 +6,7 @@ This repository publishes posts on percona.com/blog. Employees and community aut
 
 1. You already have a finished post, for example in a Google Doc, a docx file, a PDF, or Markdown.
 2. Ask your AI agent, or prepare the pull request yourself. The pull request adds the post to this repository as Markdown. Notes for an agent are in [AGENTS.md](AGENTS.md).
-3. Create the post file in `posts/<year>/slug.md`. Start from a recent post in `posts/` and replace its text and fields. The filename is the public address, `/blog/slug/`. Do not put a date in the filename.
+3. Create the post as `posts/<year>/<id>/index.md`. The `id` is a short version of the title, three to six lowercase words with hyphens. It is also the public address, `/blog/<id>/`. Do not put a date in it. Start from a recent post in `posts/` and replace its text and fields.
 4. Put images in the same folder as the post. When the post has images, use `posts/<year>/slug/index.md` and place the image files next to it. In the text, link the filename, for example `diagram.png`. The first name in `images` is the cover, 1200×630.
 5. Check that your author profile exists, or create `authors/<id>/index.md`. Look at the other authors in `authors/`. The `id` is the folder name, `name-surname`, and the post lists that id under `authors`.
 

@@ -15,6 +15,8 @@ Four example posts show the whole thing. Each one is also a guide.
 | [Example post](https://apps.percona.community/new-wordpress-blog/example-post/) ([source](posts/2026/example-post/index.md)) | Everyone | A short tour of the Markdown a post can use: headings, lists, a table, code, a diagram, images. |
 | [Demo pull request](https://github.com/dbazhenov/percona-test-blog-repo/pull/6) | Everyone | A post pull request that stays open on purpose: the preview comment, the checks, and the files a first post adds. |
 
+The published examples are on the demo WordPress blog: [apps.percona.community/new-wordpress-blog](https://apps.percona.community/new-wordpress-blog/). Posts merged in this repository appear there the same way they will on percona.com/blog.
+
 ## How it works
 
 1. Write the post wherever you like: Google Docs, Word, or straight in Markdown.

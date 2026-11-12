@@ -41,7 +41,8 @@ Look in `authors/` and in the draft first. Ask only what you cannot find there, 
 Copy the structure of these, not of other posts:
 
 - `posts/2026/how-a-perconian-publishes/`: a post by a Percona employee. It also explains the whole process and shows every formatting element.
-- `posts/2026/example-post/`: a post by a community author.
+- `posts/2026/community-post-from-a-fork/`: a post by a community author. It also explains the fork, SSH, and pull request steps for people new to Git.
+- `posts/2026/example-post/`: a short post by a community author.
 
 If an example and these notes disagree, follow these notes.
 

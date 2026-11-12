@@ -6,7 +6,7 @@ draft: false
 origin: community
 description: "A step-by-step guide for community authors who are new to Git and GitHub: fork the blog repository, set up an SSH key, add your post, and open a pull request."
 authors:
-  - jane-smith
+  - mateo-alvarez
 categories:
   - Open Source
 tags:
@@ -138,7 +138,7 @@ git switch -c blog/replication-lag-pt-heartbeat
 
 Your post goes into its own folder, `posts/<year>/<post-name>/index.md`, with its pictures next to it. If this is your first post, you also add an author page, `authors/<name-surname>/index.md`, with your portrait next to it.
 
-Community posts set `origin: community` in the front matter, and your author page sets `type: community`.
+Community posts set `origin: community` in the front matter, and your author page sets `type: community`. This post is a first post too, so its pull request adds both: the post in `posts/2026/community-post-from-a-fork/` and the author page in [`authors/mateo-alvarez/`](https://github.com/dbazhenov/percona-test-blog-repo/tree/main/authors/mateo-alvarez), with a square portrait next to it.
 
 The [example post for Perconians](https://github.com/dbazhenov/percona-test-blog-repo/tree/main/posts/2026/how-a-perconian-publishes) explains every field, how to choose categories and tags, and which formatting you can use. Everything there applies to you too, except the part about working without a fork. This post is also a working example: look at its folder in the repository.
 

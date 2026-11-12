@@ -96,7 +96,7 @@ If this is your first post, add an author page too: `authors/<your-id>/index.md`
 | `origin` | Yes | `percona` for a Perconian, `community` for anyone else. |
 | `description` | No | One or two sentences for the post card. Empty means the first paragraph is used. |
 | `authors` | Yes | Author ids from `authors/`, not display names. |
-| `categories` | Yes | One name from the category list. See the next section. |
+| `categories` | Yes | One to three names from the category list in the next section. |
 | `tags` | No | A few words that help readers find related posts. See the next section. |
 | `images` | Yes | Files next to the post. The first one is the cover, 1200×630. |
 
@@ -128,15 +128,33 @@ A few things that are easy to get wrong:
 
 ## Categories and tags
 
-A category says which database the post is about. Readers use it to browse the blog by database. A tag says what the post is about inside that database: a tool, a feature, a kind of problem.
+Categories are the sections of the blog: readers open percona.com/blog/category/mysql/ and see every MySQL post. A tag is narrower. It says what the post is about inside that section: a tool, a feature, a kind of problem.
 
 ### Choosing a category
 
-The list is short: MySQL, MariaDB, PostgreSQL, MongoDB, and Valkey. It lives in `tools/data/wp-categories.txt`, and the spelling has to match exactly.
+These are the categories that exist on percona.com/blog. Copy the name exactly as it is written here.
 
-- Pick one category. The one the reader would browse to find your post.
-- If the post compares two databases, pick the one most of the post is about.
-- If nothing fits, do not invent a name. The import does not create categories, so the post would land without one. Open an issue and ask.
+| Group | Categories |
+| --- | --- |
+| Databases | MySQL, MariaDB, PostgreSQL, MongoDB, Valkey |
+| Percona products | Percona Server for MySQL, XtraDB Cluster (PXC), Xtrabackup, Percona Monitoring and Management, ProxySQL, Percona Software, Percona Services |
+| Topics | Kubernetes, Operator, Cloud, Security, Monitoring, Benchmarks, AI & Vector, Storage Engine, Open Source, Insight for DBAs, Insight for Developers, Database Trends |
+
+- Start with the database. Almost every post has one, and it is the section most readers browse.
+- Add a product if the post is about a Percona product, for example `Percona Server for MySQL` or `Percona Monitoring and Management`.
+- Add a topic only if the whole post is about it: a benchmark goes to `Benchmarks`, a post on running the database in Kubernetes goes to `Kubernetes`.
+- One to three categories is enough. A post filed everywhere is hard to find anywhere.
+- If the post compares two databases, list both.
+- If nothing fits, do not invent a name. The import does not create categories, so the post would land without one. Ask in the pull request, and the category can be added to the site first.
+
+The front matter of a post about upgrading PostgreSQL with the Percona Operator:
+
+```yaml
+categories:
+  - PostgreSQL
+  - Kubernetes
+  - Operator
+```
 
 ### Choosing tags
 

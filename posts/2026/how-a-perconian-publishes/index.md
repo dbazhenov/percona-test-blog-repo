@@ -20,15 +20,22 @@ This is an example post, and it is also the instructions. It shows how a Perconi
 
 ## How it works
 
-You write the post as one Markdown file and open a pull request in this repository. A comment on the pull request links to a preview, so you can see how the post will look. Three people who know the subject read it and approve it. After the merge the post is published, and WordPress imports it.
+Write the post wherever you like: Google Docs, Word, or straight in Markdown. Then open a pull request in this repository yourself, or ask an AI agent to turn your draft into one. The first comment on the pull request links to a preview of your post.
 
-1. Write the post as a Markdown file.
-2. Open a pull request.
-3. Check the preview from the comment.
-4. Get three approvals.
-5. Merge. The post is published.
+After that, you wait for review. Reviewers read the post and leave comments, and you push fixes to the same branch. After three approvals the pull request is merged. GitHub Actions builds the post and asks percona.com to import it, and the post is published. The publication date is then written into your post file.
 
-![Three steps: write, review, and published](steps.png)
+```mermaid
+flowchart TD
+  A[Write the post in any editor, or in Markdown] --> B[Open a pull request yourself, or ask an AI agent]
+  B --> C[The first comment links to the preview]
+  C --> D[Reviewers read the post and leave comments]
+  D --> E[You push fixes to the same branch]
+  E --> D
+  D --> F[Three approvals, and the pull request is merged]
+  F --> G[GitHub Actions builds the post and asks percona.com to import it]
+  G --> H[The post is published on percona.com]
+  H --> I[The publication date is written into your post]
+```
 
 The rest of this post goes through each step.
 
@@ -184,14 +191,21 @@ FROM pg_extension
 WHERE extname = 'vector';
 ```
 
-A diagram, written as a Mermaid block. The preview draws it, so you do not need to paste a screenshot.
+A diagram is a Mermaid block. The preview draws it, so you do not need to paste a screenshot. The diagram in "How it works" starts like this:
 
+````markdown
 ```mermaid
-flowchart LR
-  Write --> Review --> Published
+flowchart TD
+  A[Write the post in any editor, or in Markdown] --> B[Open a pull request]
+  B --> C[The first comment links to the preview]
 ```
+````
 
-Pictures in the text are ordinary Markdown images, like the one in "How it works". The text column is 855px wide, so a picture about 1600px wide is enough. Keep each file around 200–400 KB. The cover is 1200×630. An author portrait is a square of about 400px.
+A picture is an ordinary Markdown image. Put the file next to `index.md` and use its name:
+
+![Three steps: write, review, and published](steps.png)
+
+The text column is 855px wide, so a picture about 1600px wide is enough. Keep each file around 200–400 KB. The cover is 1200×630. An author portrait is a square of about 400px.
 
 ## H2. A section heading
 
@@ -224,6 +238,8 @@ make -C tools check
 It catches a missing author page, a malformed author id, a category that is not on the list, and a picture that the text names but that is not next to the post. It does not read the writing.
 
 Ask two or three people who know the subject to review the pull request. It is merged after three approvals. If nobody picks it up, or a reviewer declines it, close it and try another post.
+
+While the pull request is open, you edit the post the same way you wrote it. Change the file, commit, and push to the same branch. The preview is rebuilt, and reviewers see the new version in the same pull request. Answer a reviewer's comment, or resolve it once it is fixed.
 
 ## What happens on the pull request
 

@@ -1,7 +1,7 @@
 ---
 title: "Example post: your first community post, from a fork to a pull request"
 id: community-post-from-a-fork
-date: "2026-11-12T14:00:00-08:00"
+date: "2026-11-12T08:06:15-08:00"
 draft: false
 origin: community
 description: "A step-by-step guide for community authors who are new to Git and GitHub: fork the blog repository, set up an SSH key, add your post, and open a pull request."

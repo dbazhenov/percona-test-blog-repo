@@ -69,11 +69,23 @@ jobs:
           SYNC_URL: ${{ vars.WORDPRESS_SYNC_URL }}
           SYNC_SECRET: ${{ secrets.WORDPRESS_SYNC_SECRET }}
         run: |
-          curl --fail-with-body --silent --show-error \
-            --retry 5 --retry-delay 10 --retry-all-errors \
+          secret=$(printf '%s' "$SYNC_SECRET" | tr -d '\r\n')
+          if [ -z "$secret" ]; then
+            echo "WORDPRESS_SYNC_SECRET is empty."
+            exit 1
+          fi
+          echo "Sending a secret of ${#secret} characters."
+          printf 'X-Percona-Blog-Secret: %s\n' "$secret" > /tmp/sync-header
+          code=$(curl --silent --show-error --output /tmp/wp-sync.json --write-out '%{http_code}' \
             -X POST \
-            -H "X-Percona-Blog-Secret: ${SYNC_SECRET}" \
-            "${SYNC_URL}"
+            -H @/tmp/sync-header \
+            "${SYNC_URL}")
+          cat /tmp/wp-sync.json
+          echo
+          if [ "$code" != "200" ]; then
+            echo "WordPress returned HTTP ${code}."
+            exit 1
+          fi
       - name: Store the publication date
         run: |
           git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" add -u -- posts

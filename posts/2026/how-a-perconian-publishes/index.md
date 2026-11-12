@@ -1,7 +1,7 @@
 ---
 title: "Example post: how a Perconian publishes a post"
 id: how-a-perconian-publishes
-date: "2026-11-12T12:00:00-08:00"
+date: "2026-11-12T07:46:38-08:00"
 draft: false
 origin: percona
 description: "How a post gets from your draft to percona.com/blog: the file, the fields, categories and tags, formatting, review, and publishing."

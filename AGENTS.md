@@ -29,12 +29,21 @@ Look in `authors/` and in the draft first. Ask only what you cannot find there, 
 ## Steps
 
 1. Create a branch from `main` named `blog/<id>`, for example `blog/mysql-connection-pool`.
-2. Pick a recent post in `posts/` with a similar shape and use it as the model for the text. Many older posts were imported from WordPress with a date in the folder name, a dated `id`, and a `slug`. Do not copy those: when a post and these notes disagree, follow these notes. Do not use `tools/archetypes/blog.md` either: it sets `draft: true`, and a draft is never published.
+2. Use one of the example posts below as the model. Do not model on other posts in `posts/`: many were imported from WordPress with a date in the folder name, a dated `id`, and a `slug`. Do not use `tools/archetypes/blog.md` either: it sets `draft: true`, and a draft is never published.
 3. Create `posts/<year>/<id>/index.md`. Put images next to it. A post with no images may be a single file, `posts/<year>/<id>.md`.
 4. Fill the front matter (below), then the text. Keep the author's words, headings, and order.
 5. Create the author page if needed.
 6. Run the check (below). It must pass.
 7. Commit and open a pull request against `main`. Fill in the pull request template: who the post is for, and anything missing, such as the cover. A community author without write access opens it from a fork.
+
+## Example posts
+
+Copy the structure of these, not of other posts:
+
+- `posts/2026/how-a-perconian-publishes/`: a post by a Percona employee. It also explains the whole process and shows every formatting element.
+- `posts/2026/example-post/`: a post by a community author.
+
+If an example and these notes disagree, follow these notes.
 
 ## Front matter
 

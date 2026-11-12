@@ -15,7 +15,7 @@ package: build
 	python3 $(ROOT)/tools/scripts/package-feed.py
 
 serve:
-	$(HUGO) $(HUGO_FLAGS) server -D --disableFastRender --bind 127.0.0.1 --port 1314 --baseURL http://localhost:1314/ --appendPort=false --cacheDir $(HUGO_CACHE)
+	$(HUGO) $(HUGO_FLAGS) server -D --disableFastRender --renderToMemory --bind 127.0.0.1 --port 1314 --baseURL http://localhost:1314/ --appendPort=false --cacheDir $(HUGO_CACHE)
 
 # HTML for posts that are not drafts.
 preview:

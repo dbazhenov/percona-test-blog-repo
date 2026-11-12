@@ -1,37 +1,97 @@
 # Agent notes for this blog
 
-The author already has a finished post, in a Google Doc, a docx file, a PDF, or Markdown. Prepare that post for this repository as Markdown and open a pull request. Do not write a new article. Do not edit `tools/` unless asked. Do not mention the publishing system in commit messages or in text you add to a post.
+This repository holds the posts of percona.com/blog. Your job is narrow: the author already has a finished post, in a Google Doc, a docx file, a PDF, or Markdown. Turn that post into a Markdown file here and open a pull request. Do not write a new article, and do not rewrite the author's text beyond fixing the formatting.
 
-After cloning, from the repository root:
+## What you may change
 
-```bash
-make -C tools serve    # http://localhost:1314/ , drafts included
-make -C tools check    # run this before a pull request
+- `posts/<year>/<id>/`: the new post and its images.
+- `authors/<author-id>/`: the author page, only if the author does not have one yet.
+
+That is all. Do not change anything else:
+
+- `tools/` is the build: templates, styles, scripts, the category list. Do not edit it, even if the preview looks wrong or the check fails. Report the problem to the author instead.
+- `.github/` holds the workflows. Do not edit it.
+- Other posts and other authors' pages are not part of the job.
+- Do not commit to `main` or to the `feed` branch, and do not merge the pull request. A post is merged by people, after review.
+
+Do not mention the publishing system in commit messages or in text you add to a post.
+
+## Ask the author first
+
+Ask, rather than guess:
+
+- Their author id, `name-surname`. Check `authors/` for an existing page.
+- If there is no page: display name, role, company, a short bio, a square portrait, GitHub and LinkedIn if they want them.
+- Whether they are a Percona employee (`origin: percona`, author `type: staff`) or a community author (`origin: community`, `type: community`).
+- The category, if the post does not make it obvious.
+- The cover image, 1200×630. If they have none, leave `images` without a cover and say in the pull request that the team will make it.
+
+## Steps
+
+1. Create a branch from `main` named `blog/<id>`, for example `blog/mysql-connection-pool`.
+2. Pick a recent post in `posts/` with a similar shape and use it as the model. Do not use `tools/archetypes/blog.md`: it sets `draft: true`, and a draft is never published.
+3. Create `posts/<year>/<id>/index.md`. Put images next to it. A post with no images may be a single file, `posts/<year>/<id>.md`.
+4. Fill the front matter (below), then the text. Keep the author's words, headings, and order.
+5. Create the author page if needed.
+6. Run the check (below). It must pass.
+7. Commit and open a pull request against `main`. Fill in the pull request template: who the post is for, and anything missing, such as the cover. A community author without write access opens it from a fork.
+
+## Front matter
+
+```yaml
+title: "Why the replica fell behind"
+id: why-the-replica-fell-behind
+date: "2026-11-12T09:00:00-08:00"
+draft: false
+origin: percona
+description: "One or two sentences. This is the summary on the blog."
+authors:
+  - name-surname
+categories:
+  - MySQL
+tags:
+  - replication
+images:
+  - cover.png
 ```
 
-`make -C tools check` must pass. It fails on a missing author page, a bad author id, a category that is not listed, or an image that is not next to the post.
+- `id`: the folder name, lowercase words with hyphens. No date in it. Set it once and never change it: a new `id` makes a new post.
+- `slug`: leave it out. The public address is `percona.com/blog/<id>/`.
+- `date`: any time near today. It is only for the preview. The real date is written when the post is published.
+- `draft: false` for a post that should be published.
+- `authors`: author ids, not display names. A `percona` post lists only `staff` authors.
+- `categories`: one to three names, copied exactly from `tools/data/wp-categories.txt`. Start with the database, then a Percona product or a topic if the post is about one. Do not invent a name. If nothing fits, say so in the pull request.
+- `tags`: two to five. Reuse the spelling other posts already use. Do not repeat the category, the author's name, or the company.
+- `images`: the first file is the cover.
 
-## Author
+## Text
 
-Path: `authors/<id>/index.md`. Look at the other authors in `authors/`.
+- Do not start the text with `# Title`. The title comes from `title`. Sections start at `##`.
+- Images sit next to `index.md` and are linked by filename: `![What the picture shows](diagram.png)`. About 1600px wide is enough. Keep each file around 200–400 KB. Use JPEG or WebP for photos, PNG or WebP for screenshots.
+- A diagram can be a `mermaid` code block instead of a screenshot. The preview draws it.
+- Code blocks name the language: ```` ```sql ````, ```` ```bash ````.
 
-`id` and the folder name are the same string: `name-surname`. Lowercase letters, digits, hyphens. Example: `pablo-svampa`. Reject `name_surname`, `name.surname`, and capitals. `name` is the display name. `type` is `staff` or `community`. Portrait file sits in that folder; `image` is its filename. Text under the front matter is the bio.
+## Author page
 
-## Post
+Path: `authors/<author-id>/index.md`. Copy the shape of an existing one in `authors/`.
 
-Path: `posts/<year>/slug/index.md`. Copy `tools/archetypes/blog.md`. A post with no images may be `posts/<year>/slug.md` instead. Do not put a date in the filename. The publication date is written when the post is published.
+The folder name is the id: `name-surname`, lowercase letters, digits, hyphens. Not `name_surname`, not `name.surname`, no capitals. `name` is the display name. `type` is `staff` or `community`. The portrait sits in the same folder, square, about 400px, and `image` is its filename. The text under the front matter is the bio.
 
-- `id`: set once to the original filename without `.md`. Never change it. Renaming the file is safe only while `id` stays.
-- Public address: the filename. `mysql-connection-pool` is published at `/blog/mysql-connection-pool/`. Set `slug` only to override that.
-- `authors`: author ids, not display names.
-- `origin`: `percona` or `community`. A `percona` post lists only `staff` authors.
-- `categories`: exact names from `tools/data/wp-categories.txt`. Do not invent one. Ask with an issue.
-- `images`: the first file is the cover. Every post needs a cover at 1200×630, the Open Graph size. If the author knows how it should look, prepare that file. If they do not, leave the cover unset and say in the pull request that the team will make it. Other images sit next to `index.md` and are referenced by filename, `![alt](diagram.png)`. Do not resize them in the build. About 1600px wide is enough for the 855px article column. Use JPEG or WebP for photos, PNG or WebP for screenshots and diagrams. Keep each file around 200–400 KB. A file of 3–4 MB is too heavy. `make -C tools check` does not measure file size. An author portrait is square, about 400px. For a diagram, use a `mermaid` code fence instead of a screenshot. The preview draws it.
-- `draft: true` hides the post from the published site and leaves it unpublished. The pull request preview and `make -C tools serve` still show it. Deleting the file does not unpublish. To unpublish, keep the file and set `draft: true`.
-- `date`: the author value is for the preview only. The publish build replaces it when the post first goes out. Do not change `date` on a later edit.
+## Run it locally
 
-## Pull request and edits
+You need [Hugo](https://gohugo.io/) 0.168 or newer (`brew install hugo` on a Mac) and Python 3. From the repository root:
 
-Open a pull request. `make -C tools check` must pass before asking for review. When the preview build finishes, a comment on the pull request links to the post. The post is merged only after an approve from 3 experts. Do not merge with fewer approvals. The same rule applies to an edit of a published post. If the pull request gets no reviewers or is declined, close it. The post did not catch interest. Start a different one.
+```bash
+make -C tools serve    # preview at http://localhost:1314/ , drafts included
+make -C tools check    # must pass before the pull request
+```
 
-Edits: for about three days after publication, change the post in a new pull request. After about three days, do not expect a git edit to replace the published text. Open an issue that names the post and the change.
+`serve` keeps running until you stop it. `check` can run while it is running.
+
+`check` fails on a missing author page, a bad author id, a category that is not on the list, or an image the text names that is not next to the post. The message names the file. Fix the post or the author page. If the failure points at `tools/` or at another post, stop and tell the author.
+
+## After the pull request
+
+A comment on the pull request links to a preview of the post. Each new commit on the same branch updates it. The post is merged after three approvals from people who know the subject.
+
+To change a published post in the first few days, open a new pull request on a branch named `fix/<id>`. After that, the post may have been polished in WordPress, and the repository no longer updates it. Ask the author to open an issue instead.

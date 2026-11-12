@@ -253,7 +253,11 @@ Look at the post the way readers will see it before you ask anyone to read it. T
 
 ### The preview link in the pull request
 
-This is the easy way, and it needs nothing on your computer. Open the pull request, and within a few minutes the first comment links to a preview of your post. Every time you push a change to the same branch, the preview is rebuilt.
+This is the easy way, and it needs nothing on your computer. Open the pull request, and within a few minutes the first comment links to a preview of your post. It looks like this:
+
+![The first comment on a pull request, with a link to the preview of the post](preview-comment.png)
+
+Every time you push a change to the same branch, the preview is rebuilt.
 
 The pull request also checks the files. If something is wrong, such as a missing author page, a category that is not on the list, or a picture the text names but that is not next to the post, the Feed check turns red and says what to fix.
 

@@ -135,7 +135,7 @@ Tags are free text, and the import creates any tag that does not exist yet. That
 
 These are the pieces a post can use.
 
-Do not start the text with `# Title`. Many editors do that, but here the title already comes from `title` in the front matter. A `#` heading in the text would be a second title. Start sections at `##`, like the heading of this section. Examples of the smaller headings are at the end of the section.
+Do not start the text with `# Title`. Many editors do that, but here the title already comes from `title` in the front matter. A `#` heading in the text would be a second title. Start sections at `##`. The H2, H3, and H4 headings are shown at the end of this section.
 
 A sentence can use **bold**, *italic*, and ***both***. ~~A phrase you took back~~ uses strikethrough. Commands and file names go in `inline code`, for example `make -C tools check`.
 
@@ -193,11 +193,15 @@ flowchart LR
 
 Pictures in the text are ordinary Markdown images, like the one in "How it works". The text column is 855px wide, so a picture about 1600px wide is enough. Keep each file around 200–400 KB. The cover is 1200×630. An author portrait is a square of about 400px.
 
-### A subsection heading
+## H2. A section heading
 
-A subsection is `###`. Use it to split a long section.
+`##` starts a section. Every section of this post is an H2.
 
-#### A smaller heading
+### H3. A subsection heading
+
+`###` splits a long section.
+
+#### H4. A smaller heading
 
 `####` is the smallest heading you will usually need.
 

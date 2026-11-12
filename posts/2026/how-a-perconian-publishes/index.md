@@ -200,7 +200,7 @@ It catches the same problems as the Feed check. It does not read the writing.
 
 ## What happens on the pull request
 
-Ask two or three people who know the subject to review the pull request. It is merged after three approvals. If nobody picks it up, or a reviewer declines it, close it and try another post.
+If you know two or three people who know the subject, ask them to review the pull request. If you do not, just wait: the blog team watches new pull requests and will find reviewers. It is merged after three approvals. If nobody picks it up, or a reviewer declines it, close it and try another post.
 
 While the pull request is open, you edit the post the same way you wrote it. Change the file, commit, and push to the same branch. The preview is rebuilt, and reviewers see the new version in the same pull request. Answer a reviewer's comment, or resolve it once it is fixed.
 

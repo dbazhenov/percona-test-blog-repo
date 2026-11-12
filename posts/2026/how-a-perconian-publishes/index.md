@@ -4,7 +4,7 @@ id: how-a-perconian-publishes
 date: "2026-11-12T12:00:00-08:00"
 draft: false
 origin: percona
-description: "The two parts of a post file, the front matter fields, the formatting you can use, and what happens after the pull request is open."
+description: "How a post gets from your draft to percona.com/blog: the file, the fields, categories and tags, formatting, review, and publishing."
 authors:
   - daniil-bazhenov
 categories:
@@ -16,45 +16,82 @@ images:
 slug: how-a-perconian-publishes
 ---
 
-A Perconian post is a pull request. You bring the writing, three people who know the subject approve it, and the merge publishes it.
+This is an example post, and it is also the instructions. It shows how a Perconian gets a post onto percona.com/blog, and it uses the formatting it describes.
 
-## The file has two parts
+## How it works
 
-The file is Markdown. The first part is front matter: the block between the two `---` lines at the top. That is the data about the post, such as the title, the author, and the category. The second part is the article, everything after the closing `---`.
+You write the post as one Markdown file and open a pull request in this repository. A comment on the pull request links to a preview, so you can see how the post will look. Three people who know the subject read it and approve it. After the merge the post is published, and WordPress imports it.
 
-Leave a blank line between them. The preview and the published post both read the two parts separately.
+1. Write the post as a Markdown file.
+2. Open a pull request.
+3. Check the preview from the comment.
+4. Get three approvals.
+5. Merge. The post is published.
 
-## Front matter
+![Three steps: write, review, and published](steps.png)
 
-`title` is the name of the post. It becomes the H1 on the page. Do not add another H1 in the article. A lot of people start the text with `# Title` because that is what other editors do. Here that makes a second title. Start the article at `##`.
+The rest of this post goes through each step.
 
-`id` is the permanent name. Set it once, to the filename without `.md`, and leave it alone. The public address is `/blog/` plus that id, unless you set `slug`. You can rename the file later. Changing `id` makes a new post.
+## What a post file looks like
 
-`slug` is optional. Set it only when the public address should differ from `id`.
+A post file has two parts. At the top, between two `---` lines, is the front matter: a few fields about the post, such as the title, the author, and the category. Below it is the text of the post.
 
-`date` is for the preview. When the post is published, the build replaces it with the time that build finishes. A later edit does not move that date. If you write a date and no time, that means midnight in `America/Los_Angeles`.
+A small post looks like this:
 
-`draft` is `false` when the post should be published. `true` keeps it off the feed and off the main site. The pull request preview still shows it. To take a published post down, set `draft: true` and keep the file. Deleting the file leaves the published post up.
+````markdown
+---
+title: "Why the replica fell behind"
+id: why-the-replica-fell-behind
+authors:
+  - daniil-bazhenov
+categories:
+  - MySQL
+tags:
+  - replication
+---
 
-`origin` is `percona` for a Perconian and `community` for anyone else. A `percona` post can list only `staff` authors.
+Last week a replica on one of our test clusters fell an hour behind.
 
-`description` is the summary on the blog. Leave it empty and the summary is the first paragraph of the article.
+## What we checked first
 
-`authors` is a list of ids, the folder names under `authors/`. Not display names. This post lists `daniil-bazhenov`.
+The first thing we looked at was the IO thread.
+````
 
-`categories` has to be a name from `tools/data/wp-categories.txt`: MySQL, MariaDB, PostgreSQL, MongoDB, or Valkey. The import does not create categories. If you need a new one, open an issue instead of inventing a spelling.
+The title from the front matter is shown at the top of the page as the post heading. The text starts right after the closing `---`.
 
-`tags` are ordinary words. They go out with the post.
+## Where to put the files
 
-`images` lists files that sit next to the post. The first name is the cover, 1200×630.
+Create a branch from `main`. Copy `tools/archetypes/blog.md` as a starting point.
+
+A post with pictures is a folder: `posts/<year>/<name>/index.md`, with the image files next to `index.md`. In the text you link a picture by its filename, as this post does with `steps.png`. A post with no pictures can be one file, `posts/<year>/<name>.md`. Do not put a date in the name.
+
+If this is your first post, add an author page too: `authors/<your-id>/index.md`, with a square portrait next to it. Your id is `name-surname`, lowercase, with hyphens. A Perconian sets `type: staff`. Look at the other folders in `authors/` for the fields.
+
+## Front matter fields
+
+| Field | Required | What to put there |
+| --- | --- | --- |
+| `title` | Yes | The post title. It is the heading at the top of the page. |
+| `id` | Yes | A permanent name, the same as the file or folder name. Set it once and do not change it. |
+| `slug` | No | Only if the address should differ from `id`. The address is `/blog/<slug>/`. |
+| `date` | Yes | Any date for the preview. Publishing replaces it with the real publication time. |
+| `draft` | Yes | `false` to publish. `true` keeps the post off the site and off the feed. |
+| `origin` | Yes | `percona` for a Perconian, `community` for anyone else. |
+| `description` | No | One or two sentences for the post card. Empty means the first paragraph is used. |
+| `authors` | Yes | Author ids from `authors/`, not display names. |
+| `categories` | Yes | One name from the category list. See the next section. |
+| `tags` | No | A few words that help readers find related posts. See the next section. |
+| `images` | Yes | Files next to the post. The first one is the cover, 1200×630. |
+
+The front matter of this post:
 
 ```yaml
 title: "Example post: how a Perconian publishes a post"
 id: how-a-perconian-publishes
-date: 2026-11-12T12:00:00-08:00
+date: "2026-11-12T12:00:00-08:00"
 draft: false
 origin: percona
-description: "One or two sentences for the summary."
+description: "How a post gets from your draft to percona.com/blog."
 authors:
   - daniil-bazhenov
 categories:
@@ -63,56 +100,67 @@ tags:
   - example
 images:
   - cover.png
+slug: how-a-perconian-publishes
 ```
 
-The author has a page of their own, `authors/<id>/index.md`. Its front matter is `id`, `name`, `type` (`staff` or `community`), `role`, `company`, `github`, `linkedin`, and `image`. The text under that block is the bio. A Perconian uses `type: staff`. The id is `name-surname`, lowercase, with hyphens. `name_surname` and `Name-Surname` are rejected.
+A few things that are easy to get wrong:
 
-## Where to put the files
+- Changing `id` after publication makes a second post. Renaming the file is fine as long as `id` stays the same.
+- The date you type is only for the preview. The real date is set when the post is published, and later edits do not move it.
+- To take a published post down, set `draft: true` and keep the file. Deleting the file leaves the post on the site.
 
-Branch from `main`. Copy `tools/archetypes/blog.md`.
+## Categories and tags
 
-With pictures, use a folder, `posts/<year>/slug/index.md`, and put the image files next to it. In the text, link the filename, as this post does with `steps.png`. With no pictures, one file is enough: `posts/<year>/slug.md`. Do not put a date in the filename.
+A category says which database the post is about. Readers use it to browse the blog by database. A tag says what the post is about inside that database: a tool, a feature, a kind of problem.
+
+### Choosing a category
+
+The list is short: MySQL, MariaDB, PostgreSQL, MongoDB, and Valkey. It lives in `tools/data/wp-categories.txt`, and the spelling has to match exactly.
+
+- Pick one category. The one the reader would browse to find your post.
+- If the post compares two databases, pick the one most of the post is about.
+- If nothing fits, do not invent a name. The import does not create categories, so the post would land without one. Open an issue and ask.
+
+### Choosing tags
+
+Tags are free text, and the import creates any tag that does not exist yet. That is useful, and it is also how a blog ends up with `Benchmarking`, `Benchmarks`, and `benchmark` as three separate tags. This repository already has that one, and `OpenSource` next to `Opensource`.
+
+- Use two to five tags. More than that stops helping.
+- Before you add a tag, look at what other posts already use, and reuse the same spelling.
+- Name the tool or feature: `pgvector`, `Percona Operator for PostgreSQL`, `InnoDB`, `replication`.
+- Do not repeat the category as a tag. A PostgreSQL post does not need a `PostgreSQL` tag.
+- Do not tag your own name, the company, or words like `database` that fit every post.
 
 ## Formatting examples
 
-These are the pieces a post can use. The headings here start at H2, because the title is already the H1.
+These are the pieces a post can use.
 
-## A section
+Do not start the text with `# Title`. Many editors do that, but here the title already comes from `title` in the front matter. A `#` heading in the text would be a second title. Start sections at `##`, like the heading of this section. Examples of the smaller headings are at the end of the section.
 
-A section is `##`.
+A sentence can use **bold**, *italic*, and ***both***. ~~A phrase you took back~~ uses strikethrough. Commands and file names go in `inline code`, for example `make -C tools check`.
 
-### A subsection
+A link looks like this: [Percona Blog](https://www.percona.com/blog/).
 
-A subsection is `###`.
+> A quote is for a short remark that should stand apart from the paragraph.
 
-#### A note
-
-A note under that is `####`.
-
-A sentence can use **bold**, *italic*, and ***both***. ~~This part was revised.~~ A command sits in `inline code`, for example `make -C tools check`.
-
-A link can point at the [Percona Blog](https://www.percona.com/blog/).
-
-> Three approvals. Not one, and not two.
-
-A short list:
+A list:
 
 - Write the post in Markdown.
-- Put images next to `index.md`.
+- Put pictures next to `index.md`.
 - Open a pull request.
 
-A sequence:
+A numbered list:
 
 1. Branch from `main`.
-2. Add the post, and an author page if you do not have one.
+2. Add the post.
 3. Open the pull request.
 
-One list inside another:
+A list inside a list:
 
-- Before review, look at three things:
+- Before review, check:
   1. The author page exists.
-  2. The category is a known name.
-  3. Every image file is next to the post.
+  2. The category is on the list.
+  3. Every picture is next to the post.
 
 A checklist:
 
@@ -120,19 +168,15 @@ A checklist:
 - [x] Author page
 - [ ] Three approvals
 
-A picture in the article, separate from the cover:
-
-![Three steps: write, review, and published](steps.png)
-
 A table:
 
 | Piece | Where it goes |
 | --- | --- |
-| Post | `posts/<year>/slug/index.md` |
-| Images | Next to `index.md` |
+| Post | `posts/<year>/<name>/index.md` |
+| Pictures | Next to `index.md` |
 | Author | `authors/<id>/index.md` |
 
-Code keeps its language name:
+Code, with the language named after the opening fence:
 
 ```sql
 SELECT extname
@@ -140,47 +184,60 @@ FROM pg_extension
 WHERE extname = 'vector';
 ```
 
-A diagram is a Mermaid block. The preview draws it, so you do not need a screenshot of the picture.
+A diagram, written as a Mermaid block. The preview draws it, so you do not need to paste a screenshot.
 
 ```mermaid
 flowchart LR
   Write --> Review --> Published
 ```
 
-The article column is 855px wide, so a picture around 1600px wide is enough. Aim for about 200–400 KB a file. A file of 3–4 MB is too heavy. The cover is 1200×630. A portrait is square, about 400px, and it is shown at 96px.
+Pictures in the text are ordinary Markdown images, like the one in "How it works". The text column is 855px wide, so a picture about 1600px wide is enough. Keep each file around 200–400 KB. The cover is 1200×630. An author portrait is a square of about 400px.
+
+### A subsection heading
+
+A subsection is `###`. Use it to split a long section.
+
+#### A smaller heading
+
+`####` is the smallest heading you will usually need.
 
 ## Before you ask for review
 
-Read it on your own machine first.
+Look at the post on your machine:
 
 ```bash
 make -C tools serve
 ```
 
-Open http://localhost:1314/ . Drafts are included there. `make -C tools preview` builds the same HTML without drafts.
+Open http://localhost:1314/ . Drafts show up there.
 
-Then:
+Then run the check:
 
 ```bash
 make -C tools check
 ```
 
-The check catches a missing author page, a bad author id, a category that is not in the list, and an image named in the post whose file is not next to it. It does not judge the writing.
+It catches a missing author page, a malformed author id, a category that is not on the list, and a picture that the text names but that is not next to the post. It does not read the writing.
 
-Ask people who know the subject to read the pull request. It is merged after 3 approvals. One or two are not enough. The same rule applies when the pull request edits a post that is already published. If nobody reviews it, or someone declines it, close it and try a different post.
+Ask two or three people who know the subject to review the pull request. It is merged after three approvals. If nobody picks it up, or a reviewer declines it, close it and try another post.
 
-## What runs on the pull request
+## What happens on the pull request
 
-Two workflows start when the pull request is opened or updated. They are not the same job.
+Two workflows run.
 
-**Preview comment** leaves one comment with a link to this post on the preview. Push another commit to the same branch and the preview is built again. That link is how the post will look. It is not the published post. Render removes the preview when the pull request is merged or closed.
+**Preview comment** posts one comment with a link to your post on the preview site. Each new commit on the same branch rebuilds the preview. The preview shows how the post will look. It is not published. Render deletes it when the pull request is merged or closed.
 
-**Feed** checks the files while the pull request is open. It publishes when the pull request is merged. You can also publish by hand: Actions, Feed, Run workflow. A normal push to `main` does not publish.
+**Feed** checks the files while the pull request is open, and publishes when it is merged. Publishing sets the publication date, updates the `feed` branch, and asks WordPress to import the post. Do not commit to `feed` yourself. A maintainer can also publish by hand from Actions, Feed, Run workflow. A regular push to `main` publishes nothing.
 
-Publishing writes the publication date, builds `wordpress.json`, and replaces the `feed` branch. Do not commit on `feed`, and do not open a pull request against it. The next publish replaces that branch. WordPress is then asked to download the file. The address is the variable `WORDPRESS_SYNC_URL`. The token is the secret `WORDPRESS_SYNC_SECRET`, the same value as Sync secret in the plugin. A token saved as a variable is not sent.
+| Workflow | Runs when | Does |
+| --- | --- | --- |
+| Preview comment | The pull request is opened or updated | Comments with a link to the preview |
+| Feed | The pull request is opened or updated | Checks the files |
+| Feed | The pull request is merged | Publishes the post |
+| Feed, Run workflow | A maintainer starts it | Publishes `main` again |
 
-## After it is published
+## Changing a published post
 
-For about three days, a change is another pull request. Say which post, and what should change. The publication date stays at the first publish.
+For about three days after publication, a fix is a new pull request. Say which post and what changes. The publication date stays the same.
 
-After about three days the text on the site may already have been edited outside git. A commit will not replace it. Open an issue, name the post, and describe the change.
+After that, the text on the site may have been edited in WordPress, and a commit will not overwrite it. Open an issue, name the post, and describe the change.

@@ -3,8 +3,10 @@ name: Preview comment
 # Render records a GitHub deployment for the pull request commit. A workflow
 # that listens for deployment_status is read from that commit, so a file that
 # exists only on main never starts. This workflow is read from main instead.
+# pull_request_target lets it comment on a pull request from a fork. It reads
+# the post through the API and never checks out or runs the pull request's code.
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, synchronize, reopened]
 
 permissions:

@@ -1,8 +1,14 @@
 name: Feed
 
+# An open pull request is checked with pull_request: a pull request from a fork
+# gets a read-only token and no secrets while its code is unreviewed.
+# The merge publishes with pull_request_target, which has the secrets and write
+# access even for a fork. By then the code is on main.
 on:
   pull_request:
-    types: [opened, synchronize, reopened, closed]
+    types: [opened, synchronize, reopened]
+  pull_request_target:
+    types: [closed]
   workflow_dispatch:
 
 permissions:
@@ -15,7 +21,7 @@ concurrency:
 jobs:
   check:
     # A closed pull request that was not merged has nothing to check.
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.action != 'closed' || github.event.pull_request.merged }}
+    if: ${{ github.event_name != 'pull_request_target' || github.event.pull_request.merged }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -31,7 +37,7 @@ jobs:
   publish:
     # Merge publishes on its own. Run workflow on the Actions page publishes main by hand.
     # A direct push to main does not start this workflow.
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.pull_request.merged }}
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request_target' && github.event.pull_request.merged) }}
     needs: check
     concurrency:
       group: feed-publish
@@ -45,7 +51,7 @@ jobs:
           ref: main
           fetch-depth: 0
       - name: Stamp the publication date
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request_target'
         env:
           MERGE: ${{ github.event.pull_request.merge_commit_sha }}
         run: |

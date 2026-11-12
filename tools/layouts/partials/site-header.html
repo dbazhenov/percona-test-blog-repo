@@ -16,8 +16,12 @@
     <a href="{{ site.Home.RelPermalink }}"{{ if eq $current site.Home.RelPermalink }} aria-current="page"{{ end }}>All posts</a>
     {{- range site.Params.examples }}
       {{- $label := .label }}
-      {{- with site.GetPage .page }}
+      {{- with .url }}
+    <a href="{{ . }}">{{ $label }}</a>
+      {{- else }}
+        {{- with site.GetPage .page }}
     <a href="{{ .RelPermalink }}"{{ if eq $current .RelPermalink }} aria-current="page"{{ end }}>{{ $label }}</a>
+        {{- end }}
       {{- end }}
     {{- end }}
     <a href="{{ site.Params.repoURL }}">Repository</a>

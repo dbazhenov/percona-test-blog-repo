@@ -45,7 +45,7 @@ flowchart TD
   H --> I[The publication date is written into your post]
 ```
 
-You can draw diagrams like this in your own posts. They are written in [Mermaid syntax](https://mermaid.js.org/intro/syntax-reference.html): flowcharts, sequence diagrams, timelines, and more. The source of this one is in "Formatting examples" below.
+You can draw diagrams like this in your own posts. They are written in [Mermaid syntax](https://mermaid.js.org/intro/syntax-reference.html): flowcharts, sequence diagrams, timelines, and more. The source of this one is in "Formatting examples" at the end of this post.
 
 The rest of this post goes through each step.
 
@@ -78,7 +78,7 @@ The title from the front matter is shown at the top of the page as the post head
 
 ## Where to put the files
 
-Create a branch from `main`. Copy `tools/archetypes/blog.md` as a starting point.
+Create a branch from `main`. The easiest start is a recent post in [`posts/`](https://github.com/dbazhenov/percona-test-blog-repo/tree/main/posts): copy its folder, rename it, and replace the text, the pictures, and the fields with your own. Give it a new `id` and `slug`, or it will clash with the post you copied. Real posts show how everything fits together better than any template.
 
 A post with pictures is a folder: `posts/<year>/<name>/index.md`, with the image files next to `index.md`. In the text you link a picture by its filename, as this post does with `steps.png`. A post with no pictures can be one file, `posts/<year>/<name>.md`. Do not put a date in the name.
 
@@ -166,6 +166,71 @@ Tags are free text, and the import creates any tag that does not exist yet. That
 - Do not repeat the category as a tag. A PostgreSQL post does not need a `PostgreSQL` tag.
 - Do not tag your own name, the company, or words like `database` that fit every post.
 
+## Before you ask for review
+
+Look at the post the way readers will see it before you ask anyone to read it. There are two ways to do that, and you only need one.
+
+### The preview link in the pull request
+
+This is the easy way, and it needs nothing on your computer. Open the pull request, and within a few minutes the first comment links to a preview of your post. It looks like this:
+
+![The first comment on a pull request, with a link to the preview of the post](preview-comment.png)
+
+Every time you push a change to the same branch, the preview is rebuilt.
+
+The pull request also checks the files. If something is wrong, such as a missing author page, a category that is not on the list, or a picture the text names but that is not next to the post, the Feed check turns red and says what to fix.
+
+### A preview on your computer
+
+If you want to see the post before you open a pull request, build it locally. You need [Hugo](https://gohugo.io/) 0.168 or newer. From the repository folder, run:
+
+```bash
+make -C tools serve
+```
+
+Open http://localhost:1314/ . Drafts show up there too, and the page reloads when you save the file.
+
+When the post looks right, stop the preview with Ctrl+C and run the same check the pull request runs:
+
+```bash
+make -C tools check
+```
+
+It catches the same problems as the Feed check. It does not read the writing.
+
+## What happens on the pull request
+
+Ask two or three people who know the subject to review the pull request. It is merged after three approvals. If nobody picks it up, or a reviewer declines it, close it and try another post.
+
+While the pull request is open, you edit the post the same way you wrote it. Change the file, commit, and push to the same branch. The preview is rebuilt, and reviewers see the new version in the same pull request. Answer a reviewer's comment, or resolve it once it is fixed.
+
+Two workflows run on the pull request.
+
+**Preview comment** posts one comment with a link to your post on the preview site. Each new commit on the same branch rebuilds the preview. The preview shows how the post will look. It is not published. Render deletes it when the pull request is merged or closed.
+
+**Feed** checks the files while the pull request is open, and publishes when it is merged. Publishing sets the publication date, updates the `feed` branch, and asks WordPress to import the post. Do not commit to `feed` yourself. A maintainer can also publish by hand from Actions, Feed, Run workflow. A regular push to `main` publishes nothing.
+
+| Workflow | Runs when | Does |
+| --- | --- | --- |
+| Preview comment | The pull request is opened or updated | Comments with a link to the preview |
+| Feed | The pull request is opened or updated | Checks the files |
+| Feed | The pull request is merged | Publishes the post |
+| Feed, Run workflow | A maintainer starts it | Publishes `main` again |
+
+## Changing a published post
+
+For the first few days after publication, the post is still yours to fix through the repository. Change the file and open a new pull request, the same way you published it. Say which post it is and what you changed. The publication date stays the same.
+
+After a few days, SEO and content specialists may polish the post. They do not rewrite your text or change what it says. They make small improvements, for example:
+
+- add or tidy up tags
+- add a call to action at the end
+- adjust headings so search engines and readers understand them better
+
+They make these changes in the WordPress admin panel, not in the repository. If the repository could still update the post, the next import would overwrite their work. So once the post has been polished, editing it through the repository is locked.
+
+You can still ask for a change. [Open an issue](https://github.com/dbazhenov/percona-test-blog-repo/issues/new) in this repository, link the post, and describe what should change and why. The team will make the change in WordPress.
+
 ## Formatting examples
 
 These are the pieces a post can use.
@@ -246,68 +311,3 @@ The text column is 855px wide, so a picture about 1600px wide is enough. Keep ea
 #### H4. A smaller heading
 
 `####` is the smallest heading you will usually need.
-
-## Before you ask for review
-
-Look at the post the way readers will see it before you ask anyone to read it. There are two ways to do that, and you only need one.
-
-### The preview link in the pull request
-
-This is the easy way, and it needs nothing on your computer. Open the pull request, and within a few minutes the first comment links to a preview of your post. It looks like this:
-
-![The first comment on a pull request, with a link to the preview of the post](preview-comment.png)
-
-Every time you push a change to the same branch, the preview is rebuilt.
-
-The pull request also checks the files. If something is wrong, such as a missing author page, a category that is not on the list, or a picture the text names but that is not next to the post, the Feed check turns red and says what to fix.
-
-### A preview on your computer
-
-If you want to see the post before you open a pull request, build it locally. You need [Hugo](https://gohugo.io/) 0.168 or newer. From the repository folder, run:
-
-```bash
-make -C tools serve
-```
-
-Open http://localhost:1314/ . Drafts show up there too, and the page reloads when you save the file.
-
-When the post looks right, stop the preview with Ctrl+C and run the same check the pull request runs:
-
-```bash
-make -C tools check
-```
-
-It catches the same problems as the Feed check. It does not read the writing.
-
-## What happens on the pull request
-
-Ask two or three people who know the subject to review the pull request. It is merged after three approvals. If nobody picks it up, or a reviewer declines it, close it and try another post.
-
-While the pull request is open, you edit the post the same way you wrote it. Change the file, commit, and push to the same branch. The preview is rebuilt, and reviewers see the new version in the same pull request. Answer a reviewer's comment, or resolve it once it is fixed.
-
-Two workflows run on the pull request.
-
-**Preview comment** posts one comment with a link to your post on the preview site. Each new commit on the same branch rebuilds the preview. The preview shows how the post will look. It is not published. Render deletes it when the pull request is merged or closed.
-
-**Feed** checks the files while the pull request is open, and publishes when it is merged. Publishing sets the publication date, updates the `feed` branch, and asks WordPress to import the post. Do not commit to `feed` yourself. A maintainer can also publish by hand from Actions, Feed, Run workflow. A regular push to `main` publishes nothing.
-
-| Workflow | Runs when | Does |
-| --- | --- | --- |
-| Preview comment | The pull request is opened or updated | Comments with a link to the preview |
-| Feed | The pull request is opened or updated | Checks the files |
-| Feed | The pull request is merged | Publishes the post |
-| Feed, Run workflow | A maintainer starts it | Publishes `main` again |
-
-## Changing a published post
-
-For the first few days after publication, the post is still yours to fix through the repository. Change the file and open a new pull request, the same way you published it. Say which post it is and what you changed. The publication date stays the same.
-
-After a few days, SEO and content specialists may polish the post. They do not rewrite your text or change what it says. They make small improvements, for example:
-
-- add or tidy up tags
-- add a call to action at the end
-- adjust headings so search engines and readers understand them better
-
-They make these changes in the WordPress admin panel, not in the repository. If the repository could still update the post, the next import would overwrite their work. So once the post has been polished, editing it through the repository is locked.
-
-You can still ask for a change. [Open an issue](https://github.com/dbazhenov/percona-test-blog-repo/issues/new) in this repository, link the post, and describe what should change and why. The team will make the change in WordPress.

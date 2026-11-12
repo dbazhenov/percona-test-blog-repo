@@ -24,7 +24,7 @@ A pull request with no reviewers, or one that is declined, did not catch interes
 
 ## When it is published
 
-The post is published automatically after the merge. The publication date is the time that build finishes. It is not the date in the filename, and it is not the date you typed for the preview. A later edit does not move that date.
+The post is published automatically after the merge. The same build can be started by hand from Actions, Feed, Run workflow. A push straight to main does not publish. The publication date is the time that build finishes. It is not the date in the filename, and it is not the date you typed for the preview. A later edit does not move that date.
 
 The `feed` branch is written by that build. It holds the published files. Do not commit to it, and do not open a pull request against it. The next build replaces the branch.
 

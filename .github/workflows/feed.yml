@@ -2,8 +2,8 @@ name: Feed
 
 on:
   pull_request:
-  push:
-    branches: [main]
+    types: [opened, synchronize, reopened, closed]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -14,14 +14,13 @@ concurrency:
 
 jobs:
   check:
-    # A direct push to main, such as a workflow edit, does not publish.
-    # GitHub's merge button records "Merge pull request #…".
-    # The whole expression is quoted: an unquoted # is a YAML comment and
-    # GitHub then rejects the file as an invalid workflow.
-    if: "${{ github.event_name == 'pull_request' || startsWith(github.event.head_commit.message, 'Merge pull request #') }}"
+    # A closed pull request that was not merged has nothing to check.
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.action != 'closed' || github.event.pull_request.merged }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha || github.sha }}
       - uses: peaceiris/actions-hugo@v3
         with:
           hugo-version: "0.168.0"
@@ -30,20 +29,28 @@ jobs:
         run: make -C tools check
 
   publish:
-    if: "${{ github.event_name == 'push' && startsWith(github.event.head_commit.message, 'Merge pull request #') }}"
+    # Merge publishes on its own. Run workflow on the Actions page publishes main by hand.
+    # A direct push to main does not start this workflow.
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.pull_request.merged }}
     needs: check
+    concurrency:
+      group: feed-publish
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
       - name: Stamp the publication date
+        if: github.event_name == 'pull_request'
         env:
-          BEFORE: ${{ github.event.before }}
-          HEAD: ${{ github.sha }}
-        run: python3 tools/scripts/stamp-publish-date.py
+          MERGE: ${{ github.event.pull_request.merge_commit_sha }}
+        run: |
+          BEFORE=$(git rev-parse "$MERGE^1")
+          BEFORE="$BEFORE" HEAD="$MERGE" python3 tools/scripts/stamp-publish-date.py
       - uses: peaceiris/actions-hugo@v3
         with:
           hugo-version: "0.168.0"

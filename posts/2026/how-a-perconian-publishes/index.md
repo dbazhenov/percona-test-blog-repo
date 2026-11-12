@@ -78,6 +78,8 @@ The title from the front matter is shown at the top of the page as the post head
 
 ## Where to put the files
 
+Perconians work right in this repository, without a fork. The Perconians group is added to the repository, so you can create a branch here and push to it. If you cannot push yet, ask the blog team to add you. Community authors do not have that access and work from a fork. The [community example post](https://github.com/dbazhenov/percona-test-blog-repo/tree/main/posts/2026/community-post-from-a-fork) walks through it step by step.
+
 Create a branch from `main` and name it after the post: `blog/` plus the post's `id`. This post lives on `blog/how-a-perconian-publishes`. A fix to a published post goes on `fix/` plus the `id`, for example `fix/how-a-perconian-publishes`. Use lowercase words with hyphens, without dates or your name. Then anyone looking at the list of branches can tell which post each one is about.
 
 The easiest start is a recent post in [`posts/`](https://github.com/dbazhenov/percona-test-blog-repo/tree/main/posts): copy its folder, rename it, and replace the text, the pictures, and the fields with your own. Give it a new `id` and `slug`, or it will clash with the post you copied. Real posts show how everything fits together better than any template.
